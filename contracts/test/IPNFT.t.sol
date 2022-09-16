@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
+import "forge-std/console.sol";
 import "../src/IPNFT.sol";
 
 contract IPNFTTest is Test {
@@ -18,5 +19,15 @@ contract IPNFTTest is Test {
         vm.stopPrank();
 
         assertEq(token.balanceOf(bob, 0), 1);
+    }
+
+    function testTokenURI() public {
+        vm.startPrank(bob);
+        token.create();
+        vm.stopPrank();
+
+        console.log(token.uri(0));
+
+        assertEq(token.uri(0), "ar://i-am-a-test-uri");
     }
 }
