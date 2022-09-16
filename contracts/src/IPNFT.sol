@@ -6,11 +6,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "../src/ERC20TokenFactory.sol";
 
 contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
+    ERC20TokenFactory public factory = new ERC20TokenFactory();
 
     mapping(uint256 => uint256) private _totalSupply;
 
@@ -38,13 +40,19 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _mint(account, id, amount, data);
     }
 
-    // function addFren(address account, uint256 id, uint256 amount, bytes memory data)
-    //     public
-    //     onlyOwner
-    //     onlyFAM(id)
-    // {
-    //     //trigger factory of ERC20 for addFren
-    // }
+    function addFren(        
+        string calldata name,
+        string calldata symbol,
+        uint8 decimals,
+        uint256 initialSupply
+        )
+        public
+        onlyOwner
+        // onlyFAM(id)
+    {
+        //locking of FAM token and conditional logic to assure only create ER20 with majority of FAM holders
+        factory.deployNewERC20Token(name,symbol,decimals,initialSupply);
+    }
 
     function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
         public
