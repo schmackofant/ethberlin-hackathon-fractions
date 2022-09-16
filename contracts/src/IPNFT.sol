@@ -7,8 +7,13 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract IPNFT is ERC1155, Ownable, Pausable, ERC1155Burnable, ERC1155Supply, ERC1155URIStorage {
+    using Counters for Counters.Counter;
+
+    Counters.Counter private _tokenIdCounter;
+
     constructor() ERC1155("") {}
 
     function setURI(string memory newuri) public onlyOwner {
@@ -24,8 +29,11 @@ contract IPNFT is ERC1155, Ownable, Pausable, ERC1155Burnable, ERC1155Supply, ER
     }
 
     function create() public {
-        _mint(msg.sender, 0, 1, "");
-        _setURI(0, "ar://i-am-a-test-uri");
+         uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+
+        _mint(msg.sender, tokenId, 1, "");
+        _setURI(tokenId, "ar://i-am-a-test-uri");
     }
 
     // function mint(address account, uint256 id, uint256 amount, bytes memory data)

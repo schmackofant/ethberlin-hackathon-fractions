@@ -21,6 +21,15 @@ contract IPNFTTest is Test {
         assertEq(token.balanceOf(bob, 0), 1);
     }
 
+    function testCounter() public {
+        vm.startPrank(bob);
+        token.create();
+        token.create();
+        vm.stopPrank();
+
+        assertEq(token.balanceOf(bob, 1), 1);
+    }
+
     function testTokenURI() public {
         vm.startPrank(bob);
         token.create();
