@@ -9,13 +9,13 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     mapping(uint256 => uint256) private _totalSupply;
-    
+
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC1155("") {}
-    
+
     function pause() public onlyOwner {
         _pause();
     }
@@ -25,8 +25,11 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     }
 
     function create() public {
-        _mint(msg.sender, 1, 1, "");
-        _setURI(1, "ar://i-am-a-test-uri");
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+
+        _mint(msg.sender, tokenId, 1, "");
+        _setURI(tokenId, "ar://i-am-a-test-uri");
     }
 
     /**
@@ -83,7 +86,7 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _burnBatch(account, ids, values);
     }
 
-    /** 
+    /**
      * @dev See {ERC1155-_beforeTokenTransfer}.
      */
     function _beforeTokenTransfer(
