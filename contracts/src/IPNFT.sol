@@ -8,20 +8,18 @@ import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
-    mapping(uint256 => uint256) private _totalSupply;
-
+    
     using Counters for Counters.Counter;
-
     Counters.Counter private _tokenIdCounter;
+
+    mapping(uint256 => uint256) private _totalSupply;
 
     constructor() ERC1155("") {}
 
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
+    modifier onlyHolder(uint256 _id) {
+        require(balanceOf(msg.sender, _id) > 0, "Must be FAM Holder");
+        require(totalSupply(_id) == 1, "Must be single holder");
+        _;
     }
 
     function create() public {
@@ -32,25 +30,20 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _setURI(tokenId, "ar://i-am-a-test-uri");
     }
 
-    /**
-     * @dev Total amount of tokens in with a given id.
-     */
-    function totalSupply(uint256 id) public view virtual returns (uint256) {
-        return _totalSupply[id];
+    function addFAM(address account, uint256 id, uint256 amount, bytes memory data)
+        public
+        onlyOwner
+        onlyHolder(id)
+    {
+        _mint(account, id, amount, data);
     }
 
-    /**
-     * @dev Indicates whether any token exist with a given id, or not.
-     */
-    function exists(uint256 id) public view virtual returns (bool) {
-        return totalSupply(id) > 0;
-    }
-
-    // function mint(address account, uint256 id, uint256 amount, bytes memory data)
+    // function addFren(address account, uint256 id, uint256 amount, bytes memory data)
     //     public
     //     onlyOwner
+    //     onlyFAM(id)
     // {
-    //     _mint(account, id, amount, data);
+    //     //trigger factory of ERC20 for addFren
     // }
 
     function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
@@ -86,7 +79,29 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _burnBatch(account, ids, values);
     }
 
+   /**
+     * @dev Total amount of tokens in with a given id.
+     */
+    function totalSupply(uint256 id) public view virtual returns (uint256) {
+        return _totalSupply[id];
+    }
+
     /**
+     * @dev Indicates whether any token exist with a given id, or not.
+     */
+    function exists(uint256 id) public view virtual returns (bool) {
+        return totalSupply(id) > 0;
+    }
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+    /** 
      * @dev See {ERC1155-_beforeTokenTransfer}.
      */
     function _beforeTokenTransfer(
