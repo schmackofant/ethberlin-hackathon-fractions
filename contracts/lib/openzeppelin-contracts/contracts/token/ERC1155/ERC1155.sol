@@ -232,7 +232,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     /**
      * @dev Sets a new URI for all token types, by relying on the token type ID
      * substitution mechanism
-     * https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP].
+    //  * https://eips.ethereum.org/EIPS/eip-1155#metadata[defined in the EIP]
      *
      * By this mechanism, any occurrence of the `\{id\}` substring in either the
      * URI or any of the amounts in the JSON file at said URI will be replaced by

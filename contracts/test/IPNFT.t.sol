@@ -18,7 +18,7 @@ contract IPNFTTest is Test {
         token.create();
         vm.stopPrank();
 
-        assertEq(token.balanceOf(bob, 0), 1);
+        assertEq(token.balanceOf(bob, 1), 1);
     }
 
     function testCounter() public {
@@ -35,8 +35,8 @@ contract IPNFTTest is Test {
         token.create();
         vm.stopPrank();
 
-        console.log(token.uri(0));
+        console.log(token.uri(1));
 
-        assertEq(token.uri(0), "ar://i-am-a-test-uri");
+        assertEq(token.uri(1), "ar://i-am-a-test-uri");
     }
 }
