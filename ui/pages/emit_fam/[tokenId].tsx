@@ -34,7 +34,7 @@ export default function EmitFAM() {
     addressOrName: process.env.NEXT_PUBLIC_ERC1155_CONTRACT,
     contractInterface: contractABI,
     functionName: 'addFAM',
-    args: [address, tokenId, fractionsAmount, '']
+    args: [address, tokenId, fractionsAmount]
   })
 
   const {
