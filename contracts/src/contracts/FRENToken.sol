@@ -26,10 +26,10 @@ contract FRENToken is ERC20 {
 
     // mint only if more FAM tokens are to be locked
     // make sure only FRENConstitutor is calling this, you can verify off of public variable on FRENTokenFactory contract
-    function mint(uint256 amount) public {
+    function mint(address recipient, uint256 amount) public {
         require(msg.sender == parentFactory, "not frenConstitutor");
 
-        _mint(accountLockingFAM, amount);
+        _mint(recipient, amount);
     }
 
 }

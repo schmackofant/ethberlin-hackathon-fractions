@@ -35,13 +35,21 @@ contract FRENConstitutor {
     // FAM token ids to top reconstitution offers
     mapping(uint256 => TopReconstitutionOffer) public FAMToTopReconstitutionOffer;
 
+    // FAM token id to reconstitution votes
+    mapping(uint256 => uint256) public FAMToReconstitutionVotes;
+
+    // (super inefficient) map accounts to voting status on various FAMs
+    mapping(address => mapping(uint256 => bool)) votingStatus;
+
+    // mapping FAM to whether reconstitution is active for it
+    mapping(uint256 => bool) reconstitutionStatus;
 
     event FRENTokenCreated(address tokenAddress);
 
 
     constructor(
-        address _famToken,
-        address _reconstitutionOfferToken
+        IPNFT _famToken,
+        IERC20 _reconstitutionOfferToken
     ) {
         famToken = _famToken;
         reconstitutionOfferToken = _reconstitutionOfferToken;
@@ -52,13 +60,12 @@ contract FRENConstitutor {
     //////////////////////////////////////////////////////////////////
 
     function deployNewFRENToken(
-        string calldata name,
-        string calldata symbol,
+        string memory name,
+        string memory symbol,
         uint8 decimals,
         uint256 initialSupply,
-        address owner,
-        uint256 parent1155,
-        address _parentFactory
+        address accountLockingFAM,
+        uint256 parent1155
     ) internal returns (address) {
 
         FRENToken frenToken = new FRENToken(
@@ -66,8 +73,9 @@ contract FRENConstitutor {
             symbol,
             decimals,
             initialSupply,
-            owner,
-            parent1155
+            accountLockingFAM,
+            parent1155,
+            address(this)
         );
         emit FRENTokenCreated(address(frenToken));
 
@@ -85,7 +93,7 @@ contract FRENConstitutor {
         uint256 id, // ID of FAM token we're minting FRENS against
         uint256 amountFAMToLock,
         uint256 initialSupply
-    ) {
+    ) public returns(address) {
         // what if you mint multiple FREN tokens against the same FAM token ID. we gotta stop that
         require(FAMTokenIdToFRENToken[id] == address(0), "FREN already created");
 
@@ -118,11 +126,9 @@ contract FRENConstitutor {
             18,
             initialSupply,
             msg.sender,
-            id,
-            address(this)
+            id
         );
 
-        FAMDepositorProfiles[msg.sender].FRENaddress = FREN;
         FAMTokenIdToFRENToken[id] = FREN;
 
         // FAMDepositorProfiles[]
@@ -153,7 +159,7 @@ contract FRENConstitutor {
         FAMDepositorProfiles[msg.sender].tokensLocked += amountFAMToLock;
 
         // minting amountFRENToMint
-        famToken.mint(msg.sender,amountFRENToMint);
+        FRENToken( FAMTokenIdToFRENToken[ FAMDepositorProfiles[msg.sender].tokenId ] ).mint(msg.sender,amountFRENToMint);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -166,23 +172,37 @@ contract FRENConstitutor {
     function reconstitutionOffer(uint256 amount, uint256 id) public {
         // must be higher offer than current offer for FAM
         require(amount > FAMToTopReconstitutionOffer[id].amount, "offer too low");
+        // reconstitution can't be active
+        require(reconstitutionStatus[id], "reconstitution is active");
 
         reconstitutionOfferToken.transferFrom(msg.sender, address(this), amount);
         
         // refund previous offerer
-        reconstitutionOfferToken.transferFrom(address(this), reconstitutionOfferers[id].offerer, reconstitutionOfferers[id].amount);
+        reconstitutionOfferToken.transferFrom(address(this), FAMToTopReconstitutionOffer[id].offerer, FAMToTopReconstitutionOffer[id].amount);
 
         // set new high offer
-        reconstitutionOfferers[id].offerer = msg.sender;
-        reconstitutionOfferers[id].amount = amount;
-        reconstitutionOfferers[id].tokenId = id;
+        FAMToTopReconstitutionOffer[id].offerer = msg.sender;
+        FAMToTopReconstitutionOffer[id].amount = amount;
+        FAMToTopReconstitutionOffer[id].tokenId = id;
 
     }
-
-    // function withdrawOffer
-
-
+    
     // allow FREN holders to signal support
+    // we're not dealing with the logic of reseting voting status for now
+    function vote(uint256 id) public {
+        require(votingStatus[msg.sender][id] == false, "already voted");
+
+        uint256 votingImpact = FRENToken(FAMTokenIdToFRENToken[id]).balanceOf(msg.sender);
+
+        FAMToReconstitutionVotes[id] += votingImpact;
+        votingStatus[msg.sender][id] = true; // you've now voted
+    }
+
+    function reconstitute(uint256 id) public {
+        require(FAMToReconstitutionVotes[id] > FRENToken(FAMTokenIdToFRENToken[id]).totalSupply() / 2, "not past 50%");
+
+        reconstitutionStatus[id] = true;
+    }
 
 
 }
