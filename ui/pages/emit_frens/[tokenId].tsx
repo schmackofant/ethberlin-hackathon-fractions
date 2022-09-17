@@ -18,6 +18,7 @@ import {
 } from 'wagmi'
 
 import IPNFTContractABI from '../../abis/IPNFT.json'
+import FRENConstitutorContractABI from '../../abis/FRENConstitutor.json'
 
 export default function EmitFren() {
   const router = useRouter()
@@ -30,7 +31,8 @@ export default function EmitFren() {
 
   const numFrensExisting = 0
 
-  const { config: contractWriteConfigForMint } = usePrepareContractWrite({
+  // approval
+  const { config: contractWriteConfigForApproval } = usePrepareContractWrite({
     addressOrName: process.env.NEXT_PUBLIC_ERC1155_CONTRACT,
     contractInterface: IPNFTContractABI,
     functionName: 'setApprovalForAll',
@@ -38,20 +40,45 @@ export default function EmitFren() {
   })
 
   const {
-    data: emitData,
+    data: emitDataForApproval,
     write: setApprovalForAll,
     isLoading: isEmitLoading,
     isSuccess: isEmitStarted,
     error: emitError
-  } = useContractWrite(contractWriteConfigForMint)
+  } = useContractWrite(contractWriteConfigForApproval)
   const {
     data: txData,
     isSuccess: txSuccess,
     error: txError
   } = useWaitForTransaction({
-    hash: emitData?.hash
+    hash: emitDataForApproval?.hash
   })
-  const wasEmitted = txSuccess
+  const wasApproved = txSuccess
+
+
+  // minting FRENS
+  const { config: contractWriteConfigForMint } = usePrepareContractWrite({
+    addressOrName: process.env.NEXT_PUBLIC_FRENCONSTITUTOR_CONTRACT,
+    contractInterface: FRENConstitutorContractABI,
+    functionName: 'createFren',
+    args: [id, amountFAMToLock, initialSupply]
+  })
+
+  const {
+    data: emitDataForMint,
+    write: createFren,
+    isLoading: isEmitFrenLoading,
+    isSuccess: isEmitFrenStarted,
+    error: emitFrenError
+  } = useContractWrite(contractWriteConfigForMint)
+  const {
+    data: frenTxData,
+    isSuccess: frenTxSuccess,
+    error: frenTxError
+  } = useWaitForTransaction({
+    hash: emitDataForMint?.hash
+  })
+  const wasCreated = txSuccess
 
   useEffect(() => {
     if (isConnected) {
@@ -96,6 +123,20 @@ export default function EmitFren() {
           <Button colorScheme="green" onClick={setApprovalForAll as any}>
             Create Fren tokens
           </Button>
+
+          {!wasApproved && (
+            <Button
+              colorScheme="green"
+              onClick={emitFAM as any}
+              loadingText="Waiting for transaction..."
+              isDisabled={
+                !emitFAM || isEmitLoading || isEmitStarted || !isConnected
+              }
+              isLoading={isEmitLoading || (isEmitStarted && !wasApproved)}
+            >
+              {!isEmitLoading && !isEmitStarted && 'Create FAM tokens'}
+            </Button>
+          )}
         </VStack>
       </Box>
     </>
