@@ -1,14 +1,25 @@
 import { Badge, Box, Button, Flex } from '@chakra-ui/react'
+import Link from 'next/link'
 
-function IpnftCard() {
-  const property = {
+export interface CardProps {
+  tokenId: number
+  title: string
+  fundingAmount: string
+  mintCount: number
+  imageUrl: string
+}
+
+const property = {
     imageUrl: 'https://bit.ly/2Z4KKcF',
-    imageAlt: 'Rear view of modern home with pool',
     title: 'The Longevity Molecule',
-    formattedPrice: '$250.000',
-    mintCount: 1,
-    rating: 4
+    foundingAmount: '$250.000',
+    mintCount: 1
   }
+
+
+const IpnftCard = (props: CardProps) => {
+
+  const { title, imageUrl, fundingAmount, mintCount } = props;
 
   return (
     <Box
@@ -17,11 +28,13 @@ function IpnftCard() {
       borderRadius="lg"
       overflow="hidden"
       bg="white"
+      boxShadow='md'
+      
     >
-      <img
-        src="https://arweave.net/gQm_NpkJIjEFD6sOVHLEJ-tZIKhRvgmYEl5es0g-YdQ"
-        alt="ipnft"
-      />
+    <Box height="14rem" backgroundColor="red" backgroundImage={imageUrl} backgroundPosition="center">
+
+    </Box>
+      
 
       <Box p="6">
         <Box display="flex" alignItems="baseline">
@@ -53,11 +66,11 @@ function IpnftCard() {
           lineHeight="tight"
           noOfLines={1}
         >
-          {property.title}
+          {title} {props.tokenId}
         </Box>
 
         <Box>
-          {property.formattedPrice + ' '}
+          {fundingAmount + ' '}
           <Box as="span" color="gray.600" fontSize="sm">
             total Funding
           </Box>
@@ -65,19 +78,25 @@ function IpnftCard() {
 
         <Box display="flex" mt="2" alignItems="center">
           <Box as="span" ml="2" color="gray.600" fontSize="sm">
-            {property.mintCount} out of {property.mintCount}
+            {mintCount} out of {mintCount}
           </Box>
         </Box>
         <Flex width="100%" justify="space-between" marginTop="20px">
-          <Button width="1/3" colorScheme="blue">
-            View
-          </Button>
-          <Button width="1/4" colorScheme="blue">
-            Create FAM
-          </Button>
-          <Button width="1/4" colorScheme="blue">
-            Create FREN
-          </Button>
+          <Link href={`/ipnft/${encodeURIComponent(props.tokenId)}`}>
+            <Button width="1/3" colorScheme="blue">
+              View
+            </Button>
+          </Link>
+          <Link href={`/emit_fam/${encodeURIComponent(props.tokenId)}`}>
+            <Button width="1/4" colorScheme="blue">
+              Create FAM
+            </Button>
+          </Link>
+          <Link href={`/emit_frens/${encodeURIComponent(props.tokenId)}`}>
+            <Button width="1/4" colorScheme="blue">
+              Create FRENS
+            </Button>
+          </Link>
         </Flex>
       </Box>
     </Box>

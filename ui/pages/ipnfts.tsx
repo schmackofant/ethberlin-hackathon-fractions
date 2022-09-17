@@ -1,4 +1,12 @@
-import { Alert, AlertIcon, Box, Heading, SimpleGrid } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Fade,
+  Heading,
+  SimpleGrid
+} from '@chakra-ui/react'
+import { ipnftData } from 'lib/ipnftData'
 import { useAccount } from 'wagmi'
 
 import IpnftCard from '@/components/IpnftCard'
@@ -22,15 +30,20 @@ export default function Home() {
       </Box>
 
       {address && (
-        <SimpleGrid columns={2} spacing={4}>
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-        </SimpleGrid>
+        <Fade in={isConnected}>
+          <SimpleGrid columns={2} spacing={4}>
+            {ipnftData.map((ipnft) => (
+              <IpnftCard
+                key={ipnft.id}
+                tokenId={ipnft.id}
+                title={ipnft.title}
+                fundingAmount={ipnft.fundingAmount}
+                mintCount={ipnft.mintCount}
+                imageUrl={ipnft.imageUrl}
+              />
+            ))}
+          </SimpleGrid>
+        </Fade>
       )}
     </>
   )
