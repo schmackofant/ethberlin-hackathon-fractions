@@ -3,20 +3,20 @@ import {
     Flex,
     HStack,
     Image,
-    Link,
+    Link as Anchor,
     useColorModeValue
   } from '@chakra-ui/react'
   import { ConnectKitButton } from 'connectkit'
   import { FC } from 'react'
+  import Link from 'next/link'
 
-  type Link = {
+  type Anchor = {
     name: string
     path: string
   }
 
-  const links: Link[] = [
-    { name: 'Home', path: '/' },
-    { name: 'My IP-NFTs', path: '/ipnfts' }
+  const links: Anchor[] = [
+    { name: 'My IP-NFTS', path: '/ipnfts' }
   ]
 
   const NavLink = ({ link }: { link: Link }) => (
@@ -39,7 +39,9 @@ import {
       <Box>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <div>
-            <Image src="/images/logo.svg" alt="Logo" h={10} />
+            <Link href="/">
+              <Image src="/images/Logo.svg" alt="Logo" h={10} />
+            </Link>
           </div>
           <HStack spacing={8} alignItems={'center'}>
             <HStack
@@ -50,7 +52,9 @@ import {
               display={{ base: 'none', md: 'flex' }}
             >
               {links.map((link) => (
-                <NavLink link={link} key={link.path} />
+                <Link href={link.path} key={link.path}>
+                  {link.name}
+                </Link>
               ))}
             </HStack>
           </HStack>
