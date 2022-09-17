@@ -48,10 +48,9 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     function addFAM(
         address account,
         uint256 id,
-        uint256 amount,
-        bytes memory data
+        uint256 amount
     ) public onlyHolder(id) {
-        _mint(account, id, amount, data);
+        _mint(account, id, amount, "");
     }
 
     function burn(
