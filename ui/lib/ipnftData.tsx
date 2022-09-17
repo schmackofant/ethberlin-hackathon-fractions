@@ -6,5 +6,13 @@ export const ipnftData = [
     therapeuticAreas: ['AGEING', 'MENTAL HEALTH', 'RESPIRATORY'],
     fundingAmount: '250.000',
     mintCount: 1
+  },
+  {
+    id: 2,
+    title: 'The longevity Molecule',
+    imageUrl: 'https://bit.ly/2Z4KKcF',
+    therapeuticAreas: ['AGEING', 'Obesity', 'RESPIRATORY'],
+    fundingAmount: '250.000',
+    mintCount: 1
   }
 ]
