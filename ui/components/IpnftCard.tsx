@@ -1,4 +1,5 @@
 import { Badge, Box, Button, Flex } from '@chakra-ui/react'
+import Link from 'next/link'
 
 export interface CardProps {
   tokenId: number
@@ -73,15 +74,21 @@ const IpnftCard = (props: CardProps) => {
           </Box>
         </Box>
         <Flex width="100%" justify="space-between" marginTop="20px">
-          <Button width="1/3" colorScheme="blue">
-            View
-          </Button>
-          <Button width="1/4" colorScheme="blue">
-            Create FAM
-          </Button>
-          <Button width="1/4" colorScheme="blue">
-            Create FREN
-          </Button>
+          <Link href={`/ipnft/${encodeURIComponent(props.tokenId)}`}>
+            <Button width="1/3" colorScheme="blue">
+              View
+            </Button>
+          </Link>
+          <Link href={`/emit_fam/${encodeURIComponent(props.tokenId)}`}>
+            <Button width="1/4" colorScheme="blue">
+              Create FAM
+            </Button>
+          </Link>
+          <Link href={`/emit_frens/${encodeURIComponent(props.tokenId)}`}>
+            <Button width="1/4" colorScheme="blue">
+              Create FRENS
+            </Button>
+          </Link>
         </Flex>
       </Box>
     </Box>
