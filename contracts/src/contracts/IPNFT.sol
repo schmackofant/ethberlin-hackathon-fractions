@@ -14,20 +14,20 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
     
-    address public erc20factory;
+    address public frenFactory;
 
     constructor() ERC1155("") {}
 
 
     // mappings 
     mapping(uint256 => uint256) private _totalSupply;
-    mapping(uint256 => erc20Contracts) public erc1155ToERC20;
+    mapping(uint256 => FRENContracts) public erc1155ToFREN;
 
     //structs
-    struct erc20Contracts {
+    struct FRENContracts {
         uint256 tokenId;
         uint256 tokensLocked;
-        address erc20address;
+        address FRENaddress;
     }
 
 
@@ -66,14 +66,21 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         onlyOwner // onlyFAM(id)
         returns(address)
     {
-        address erc20 = IFactory(erc20factory).deployNewERC20Token(name, symbol, decimals, initialSupply);
+        address FREN = IFactory(frenFactory).deployNewFRENToken(
+            name,
+            symbol,
+            decimals,
+            initialSupply,
+            msg.sender,
+            id
+        );
 
-        erc20Contracts memory newContract;
+        FRENContracts memory newContract;
         newContract.tokenId = id;
         // newContract.tokensLocked = ;
-        newContract.erc20address = erc20;
-        erc1155ToERC20[id] = newContract;
-        return erc20;
+        newContract.FRENaddress = FREN;
+        erc1155ToFREN[id] = newContract;
+        return FREN;
     }
 
 
@@ -125,11 +132,11 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _unpause();
     }
 
-    function setFactory(address _erc20Factory)
+    function setFactory(address _frenFactory)
         public
         onlyOwner
     {
-        erc20factory =  _erc20Factory;
+        frenFactory =  _frenFactory;
     }
 
 

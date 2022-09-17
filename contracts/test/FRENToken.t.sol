@@ -2,20 +2,21 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/contracts/ERC20Token.sol";
+import "../src/contracts/FRENToken.sol";
 
-contract ERC20TokenTest is Test {
-    ERC20Token public token;
+contract FRENTokenTest is Test {
+    FRENToken public token;
     address bob = address(0x1);
     uint256 HUNDRED_IN_WEI = 100000000000000000000;
 
     function setUp() public {
-        token = new ERC20Token(
+        token = new FRENToken(
           "foo",
           "foo",
           18,
           100,
-          bob
+          bob,
+          1
         );
     }
 
