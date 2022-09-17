@@ -10,6 +10,7 @@ IP-NFTs have been applied successfully in the field through research DAOs like [
 
 ## Todos
 
+- [ ] Create basic frontend (nextjs, rainbowkit & wagmi, shakra UI)
 - [ ] Proper create function where you can pass the tokenURI
 - [ ] Deploy the ERC20 token factory directly in the constructor of our ERC1155 contract
 - [ ] Create Deploy script
