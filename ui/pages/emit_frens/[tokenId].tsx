@@ -7,6 +7,7 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
+import { BigNumber } from 'ethers'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import {
@@ -98,7 +99,7 @@ export default function EmitFren() {
           {wasApproved && (
             <>
               <FormControl>
-                <FormLabel>Amount of Frens to create</FormLabel>
+                <FormLabel>Initial FRENS supply</FormLabel>
                 <Input
                   variant="outline"
                   value={initialSupply}
@@ -109,7 +110,7 @@ export default function EmitFren() {
               </FormControl>
 
               <FormControl>
-                <FormLabel>Recipient address</FormLabel>
+                <FormLabel>Amount of FAM tokens to lock</FormLabel>
                 <Input
                   variant="outline"
                   value={FamLockAmount}
