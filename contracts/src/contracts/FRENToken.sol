@@ -4,7 +4,6 @@ pragma solidity ^0.8.13;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract FRENToken is ERC20 {
-
     uint256 public parent1155;
     address public parentFactory;
     address public accountLockingFAM;
@@ -15,7 +14,7 @@ contract FRENToken is ERC20 {
         uint8 decimals,
         uint256 initialSupply,
         address _accountLockingFAM,
-        uint256 _parent1155,  // The parent ERC1155 token id that the ERC20 is a FREN for
+        uint256 _parent1155, // The parent ERC1155 token id that the ERC20 is a FREN for
         address _parentFactory
     ) ERC20(name, symbol) {
         _mint(_accountLockingFAM, initialSupply * 10**uint256(decimals));
@@ -31,5 +30,4 @@ contract FRENToken is ERC20 {
 
         _mint(accountLockingFAM, amount);
     }
-
 }

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
-interface IFactory{
+interface IFactory {
     function deployNewFRENToken(
         string calldata name,
         string calldata symbol,
@@ -10,5 +10,5 @@ interface IFactory{
         address owner,
         uint256 parent1155,
         address _parentFactory
-    ) external returns(address erc20address); 
+    ) external returns (address erc20address);
 }

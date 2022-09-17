@@ -3,6 +3,8 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "./FRENToken.sol";
 import "./IPNFT.sol";
 
@@ -10,14 +12,15 @@ contract FRENConstitutor {
 
     using Strings for uint256;  // clever package which lets you cast uints to strings
 
-    IPNFT public famToken;
+    address public famToken;
     // FRENTokenFactory public frenTokenFactory;
-    IERC20 public reconstitutionOfferToken; // Token that we're accepting reconstitution offers in 
+    address public reconstitutionOfferToken; // Token that we're accepting reconstitution offers in 
 
     //structs
     struct FAMDepositorProfile {
         uint256 tokenId;
         uint256 tokensLocked;
+        address FRENaddress;
     }
     
     struct TopReconstitutionOffer {
@@ -43,6 +46,7 @@ contract FRENConstitutor {
         address _famToken,
         address _reconstitutionOfferToken
     ) {
+        
         famToken = _famToken;
         reconstitutionOfferToken = _reconstitutionOfferToken;
     }
@@ -52,8 +56,8 @@ contract FRENConstitutor {
     //////////////////////////////////////////////////////////////////
 
     function deployNewFRENToken(
-        string calldata name,
-        string calldata symbol,
+        string memory name,
+        string memory symbol,
         uint8 decimals,
         uint256 initialSupply,
         address owner,
@@ -67,7 +71,8 @@ contract FRENConstitutor {
             decimals,
             initialSupply,
             owner,
-            parent1155
+            parent1155,
+            _parentFactory
         );
         emit FRENTokenCreated(address(frenToken));
 
@@ -83,14 +88,17 @@ contract FRENConstitutor {
     // Because the FREN contract already exists
     function createFren(
         uint256 id, // ID of FAM token we're minting FRENS against
+        string memory name,
+        string memory symbol,
         uint256 amountFAMToLock,
         uint256 initialSupply
-    ) {
+    ) public 
+    returns(address){
         // what if you mint multiple FREN tokens against the same FAM token ID. we gotta stop that
         require(FAMTokenIdToFRENToken[id] == address(0), "FREN already created");
 
         // acquire FAM tokens
-        famToken.safeTransferFrom(
+        IERC1155(famToken).safeTransferFrom(
             msg.sender,
             address(this),
             id,
@@ -103,18 +111,8 @@ contract FRENConstitutor {
 
         // This mints initialSupply to msg.sender as well as create contract
         address FREN = deployNewFRENToken(
-            string(
-                abi.encodePacked(
-                    "FREN Token - ",
-                    id.toString()
-                )
-            ), // name
-            string(
-                abi.encodePacked(
-                    "FREN",
-                    id.toString()
-                )
-            ), // symbol
+            name,
+            symbol,
             18,
             initialSupply,
             msg.sender,
@@ -142,7 +140,7 @@ contract FRENConstitutor {
         uint256 amountFRENToMint
     ) public {
         // acquire FAM tokens
-        famToken.safeTransferFrom(
+        IERC1155(famToken).safeTransferFrom(
             msg.sender,
             address(this),
             FAMDepositorProfiles[msg.sender].tokenId,
@@ -153,7 +151,7 @@ contract FRENConstitutor {
         FAMDepositorProfiles[msg.sender].tokensLocked += amountFAMToLock;
 
         // minting amountFRENToMint
-        famToken.mint(msg.sender,amountFRENToMint);
+        FRENToken(FAMDepositorProfiles[msg.sender].FRENaddress).mint(amountFRENToMint);
     }
 
     //////////////////////////////////////////////////////////////////
@@ -167,15 +165,15 @@ contract FRENConstitutor {
         // must be higher offer than current offer for FAM
         require(amount > FAMToTopReconstitutionOffer[id].amount, "offer too low");
 
-        reconstitutionOfferToken.transferFrom(msg.sender, address(this), amount);
+        IERC20(reconstitutionOfferToken).transferFrom(msg.sender, address(this), amount);
         
         // refund previous offerer
-        reconstitutionOfferToken.transferFrom(address(this), reconstitutionOfferers[id].offerer, reconstitutionOfferers[id].amount);
+        IERC20(reconstitutionOfferToken).transferFrom(address(this), FAMToTopReconstitutionOffer[id].offerer, FAMToTopReconstitutionOffer[id].amount);
 
         // set new high offer
-        reconstitutionOfferers[id].offerer = msg.sender;
-        reconstitutionOfferers[id].amount = amount;
-        reconstitutionOfferers[id].tokenId = id;
+        FAMToTopReconstitutionOffer[id].offerer = msg.sender;
+        FAMToTopReconstitutionOffer[id].amount = amount;
+        FAMToTopReconstitutionOffer[id].tokenId = id;
 
     }
 

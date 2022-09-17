@@ -9,16 +9,14 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
-
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
-    
+
     // address public frenFactory;
 
     constructor() ERC1155("") {}
 
-
-    // mappings 
+    // mappings
     mapping(uint256 => uint256) private _totalSupply;
     mapping(uint256 => FRENContracts) public erc1155ToFREN;
 
@@ -28,8 +26,6 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         uint256 tokensLocked;
         address FRENaddress;
     }
-
-
 
     modifier onlyHolder(uint256 _id) {
         require(balanceOf(msg.sender, _id) > 0, "Must be FAM Holder");
@@ -108,7 +104,6 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     // {
     //     frenFactory =  _frenFactory;
     // }
-
 
     /**
      * @dev See {ERC1155-_beforeTokenTransfer}.
