@@ -28,6 +28,7 @@ IP-NFTs have been applied successfully in the field through research DAOs like [
 
 - (Our SAFE multisig on Goerli: https://gnosis-safe.io/app/gor:0xf9Fa16F0c4741f6769f9d59e4F1DA9b566667889/home)
 - Our SAFE multisig on Rinkeby: https://gnosis-safe.io/app/rin:0x582ffC610623c5C7c6674F259dFCe7A3276bFAFb/home
+- Test Snapshot space: https://snapshot.org/#/schmackofant.eth
 
 ## Other notes
 
