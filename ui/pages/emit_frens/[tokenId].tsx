@@ -7,9 +7,8 @@ import {
   Input,
   VStack
 } from '@chakra-ui/react'
-import { BigNumber } from 'ethers'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   useAccount,
   // useContractEvent,
@@ -28,8 +27,6 @@ export default function EmitFren() {
 
   const [initialSupply, setInitialSupply] = useState(1)
   const [FamLockAmount, setFamLockAmount] = useState(1)
-
-  const numFrensExisting = 0
 
   // approval
   const { config: contractWriteConfigForApproval } = usePrepareContractWrite({
@@ -126,7 +123,7 @@ export default function EmitFren() {
                 // }
                 isLoading={isEmitLoading || (isEmitStarted && !wasApproved)}
               >
-                {!isEmitLoading && !isEmitStarted && 'Create FAM tokens'}
+                Create FRENS
               </Button>
             </>
           )}
