@@ -1,5 +1,7 @@
-import { Alert, AlertIcon, Box, Heading } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Heading, SimpleGrid } from '@chakra-ui/react'
 import { useAccount } from 'wagmi'
+
+import IpnftCard from '@/components/IpnftCard'
 
 export default function Home() {
   const { address, isConnected } = useAccount()
@@ -18,6 +20,18 @@ export default function Home() {
           </Alert>
         )}
       </Box>
+
+      {address && (
+        <SimpleGrid columns={2} spacing={4}>
+          <IpnftCard />
+          <IpnftCard />
+          <IpnftCard />
+          <IpnftCard />
+          <IpnftCard />
+          <IpnftCard />
+          <IpnftCard />
+        </SimpleGrid>
+      )}
     </>
   )
 }
