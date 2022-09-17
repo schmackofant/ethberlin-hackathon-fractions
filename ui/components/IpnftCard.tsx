@@ -1,5 +1,8 @@
-import { Badge, Box, Button, Flex } from '@chakra-ui/react'
+import { Badge, Box, Button, Flex, Skeleton } from '@chakra-ui/react'
 import Link from 'next/link'
+import { useAccount, useContractRead } from 'wagmi'
+
+import contractABI from '../abis/IPNFT.json'
 
 export interface CardProps {
   tokenId: number
@@ -12,6 +15,30 @@ export interface CardProps {
 
 const IpnftCard = (props: CardProps) => {
   const { title, imageUrl, fundingAmount, mintCount, therapeuticAreas } = props
+
+  const { address } = useAccount()
+
+  const {
+    data: totalSupplyData,
+    // isError: totalSupplyError,
+    isLoading: isTotalSupplyLoading
+  } = useContractRead({
+    addressOrName: process.env.NEXT_PUBLIC_ERC1155_CONTRACT,
+    contractInterface: contractABI,
+    functionName: 'totalSupply',
+    args: [props.tokenId]
+  })
+
+  const {
+    data: balanceData,
+    // isError: balanceError,
+    isLoading: isBalanceLoading
+  } = useContractRead({
+    addressOrName: process.env.NEXT_PUBLIC_ERC1155_CONTRACT,
+    contractInterface: contractABI,
+    functionName: 'balanceOf',
+    args: [address, props.tokenId]
+  })
 
   return (
     <Box
@@ -61,11 +88,18 @@ const IpnftCard = (props: CardProps) => {
           </Box>
         </Box>
 
-        <Box display="flex" mt="2" alignItems="center">
-          <Box as="span" ml="2" color="gray.600" fontSize="sm">
-            {mintCount} out of {mintCount}
+        {(isTotalSupplyLoading || isBalanceLoading) && (
+          <Skeleton height="22px" />
+        )}
+
+        {totalSupplyData && balanceData && (
+          <Box display="flex" mt="2" alignItems="center">
+            <Box as="span" ml="2" color="gray.600" fontSize="sm">
+              {balanceData.toString()} out of {totalSupplyData.toString()}
+            </Box>
           </Box>
-        </Box>
+        )}
+
         <Flex width="100%" justify="space-between" marginTop="20px">
           <Link href={`/ipnft/${encodeURIComponent(props.tokenId)}`}>
             <Button
