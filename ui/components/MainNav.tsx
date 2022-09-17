@@ -8,18 +8,17 @@ import {
   } from '@chakra-ui/react'
   import { ConnectKitButton } from 'connectkit'
   import { FC } from 'react'
-  
+
   type Link = {
     name: string
     path: string
   }
-  
+
   const links: Link[] = [
     { name: 'Home', path: '/' },
-    { name: 'Mint', path: '/mint' },
-    { name: 'My IP-NFTs', path: '/decrypt' }
+    { name: 'My IP-NFTs', path: '/ipnfts' }
   ]
-  
+
   const NavLink = ({ link }: { link: Link }) => (
     <Link
       px={3}
@@ -34,7 +33,7 @@ import {
       {link.name}
     </Link>
   )
-  
+
   const MainNav: FC = () => {
     return (
       <Box>
@@ -60,6 +59,5 @@ import {
       </Box>
     )
   }
-  
+
   export default MainNav
-  

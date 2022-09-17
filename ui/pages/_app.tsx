@@ -1,4 +1,4 @@
-import { ChakraProvider, Container } from "@chakra-ui/react";
+import { ChakraProvider, Container, Box } from "@chakra-ui/react";
 import { ConnectKitProvider, getDefaultClient } from "connectkit";
 import { chain, createClient, WagmiConfig } from "wagmi";
 import { getDefaultProvider } from "ethers";
@@ -35,7 +35,9 @@ function MyApp({ Component, pageProps }) {
           <Container centerContent>
             <Container maxW={'3xl'} m={6} minWidth="3xl">
               <MainNav />
-              <Component {...pageProps} />
+              <Box px={4} py={6} bg='gray.100' borderRadius="md" mt={4}>
+                <Component {...pageProps} />
+              </Box>
             </Container>
           </Container>
         </ConnectKitProvider>
