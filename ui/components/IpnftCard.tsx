@@ -3,16 +3,23 @@ import Link from 'next/link'
 
 export interface CardProps {
   tokenId: number
+  title: string
+  fundingAmount: string
+  mintCount: number
+  imageUrl: string
 }
 
-const IpnftCard = (props: CardProps) => {
-  const property = {
+const property = {
     imageUrl: 'https://bit.ly/2Z4KKcF',
-    imageAlt: 'Rear view of modern home with pool',
     title: 'The Longevity Molecule',
     foundingAmount: '$250.000',
     mintCount: 1
   }
+
+
+const IpnftCard = (props: CardProps) => {
+
+  const { title, imageUrl, fundingAmount, mintCount } = props;
 
   return (
     <Box
@@ -24,8 +31,7 @@ const IpnftCard = (props: CardProps) => {
       boxShadow='md'
     >
       <img
-        src="https://arweave.net/gQm_NpkJIjEFD6sOVHLEJ-tZIKhRvgmYEl5es0g-YdQ"
-        alt="ipnft"
+        src={imageUrl}
       />
 
       <Box p="6">
@@ -58,11 +64,11 @@ const IpnftCard = (props: CardProps) => {
           lineHeight="tight"
           noOfLines={1}
         >
-          {property.title} {props.tokenId}
+          {title} {props.tokenId}
         </Box>
 
         <Box>
-          {property.foundingAmount + ' '}
+          {fundingAmount + ' '}
           <Box as="span" color="gray.600" fontSize="sm">
             total Funding
           </Box>
