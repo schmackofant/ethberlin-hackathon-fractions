@@ -9,7 +9,15 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useAccount } from 'wagmi'
+import {
+  useAccount,
+  // useContractEvent,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction
+} from 'wagmi'
+
+import contractABI from '../../abis/IPNFT.json'
 
 export default function EmitFAM() {
   const router = useRouter()
@@ -22,6 +30,29 @@ export default function EmitFAM() {
 
   const numFractionsExisting = 1
 
+  const { config: contractWriteConfigForMint } = usePrepareContractWrite({
+    addressOrName: process.env.NEXT_PUBLIC_ERC1155_CONTRACT,
+    contractInterface: contractABI,
+    functionName: 'addFAM',
+    args: [address, tokenId, fractionsAmount, '']
+  })
+
+  const {
+    data: emitData,
+    write: emitFAM,
+    isLoading: isEmitLoading,
+    isSuccess: isEmitStarted,
+    error: emitError
+  } = useContractWrite(contractWriteConfigForMint)
+  const {
+    data: txData,
+    isSuccess: txSuccess,
+    error: txError
+  } = useWaitForTransaction({
+    hash: emitData?.hash
+  })
+  const wasEmitted = txSuccess
+
   useEffect(() => {
     if (isConnected) {
       setRecipientAddress(address)
@@ -31,10 +62,6 @@ export default function EmitFAM() {
   useEffect(() => {
     setNewTotalSupply(numFractionsExisting + fractionsAmount)
   }, [fractionsAmount])
-
-  async function handleEmitFAM() {
-    alert('fractionalize it baby')
-  }
 
   return (
     <>
@@ -66,7 +93,7 @@ export default function EmitFAM() {
 
           <p>New total supply will be {newTotalSupply}</p>
 
-          <Button colorScheme="green" onClick={handleEmitFAM}>
+          <Button colorScheme="green" onClick={emitFAM as any}>
             Create FAM tokens
           </Button>
         </VStack>
