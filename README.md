@@ -24,6 +24,10 @@ IP-NFTs have been applied successfully in the field through research DAOs like [
 - How to explain the need for the additional emission of FRENS in the scope of this hackathon? Why not stop at FAM? 
 - Legal framework (FAM & FRENS) might be hard to explain
 
+## Links
+
+- Our SAFE multisig on Goerli: https://gnosis-safe.io/app/gor:0xf9Fa16F0c4741f6769f9d59e4F1DA9b566667889/home
+
 ## Other notes
 
 - so und so viele fractions erstellen und rausgeben
