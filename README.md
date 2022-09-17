@@ -10,15 +10,18 @@ IP-NFTs have been applied successfully in the field through research DAOs like [
 
 ## Todos
 
-- [ ] Deploy script
-- [ ] Solidity linting
+- [ ] Proper create function where you can pass the tokenURI
+- [ ] Deploy the ERC20 token factory directly in the constructor of our ERC1155 contract
+- [ ] Create Deploy script
 - [ ] Snapshot & Zodiac module research
 - [ ] Burn fractions and go back to totalSupply of 1 again by majority vote of FAM hodlers?
 - [ ] Require FAM holders to lock their FAM tokens in order to claim their share of the emitted FRENS?
+- [ ] Add Solidity linting
 
 ## Challenges
 
-- How to explain the need for the additional emission of FRENS in the scope of this hackathon? Why not stop at FAM?
+- How to explain the need for the additional emission of FRENS in the scope of this hackathon? Why not stop at FAM? 
+- Legal framework (FAM & FRENS) might be hard to explain
 
 ## Other notes
 
