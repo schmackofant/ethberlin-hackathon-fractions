@@ -122,22 +122,12 @@ const IpnftCard = (props: CardProps) => {
             </Button>
           </a>
           <Link href={`/emit_fam/${encodeURIComponent(props.tokenId)}`}>
-            <Button
-              width="1/3"
-              backgroundColor="02213a"
-              fontSize="12px"
-              _hover={{ bg: '#B2F5EA' }}
-            >
+            <Button width="1/3" colorScheme="blue" fontSize="12px">
               Create FAM
             </Button>
           </Link>
           <Link href={`/emit_frens/${encodeURIComponent(props.tokenId)}`}>
-            <Button
-              width="1/4"
-              backgroundColor="02213a"
-              _hover={{ bg: '#B2F5EA' }}
-              fontSize="12px"
-            >
+            <Button width="1/4" colorScheme="blue" fontSize="12px">
               Create FRENS
             </Button>
           </Link>
