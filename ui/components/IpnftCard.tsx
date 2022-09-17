@@ -7,13 +7,11 @@ export interface CardProps {
   fundingAmount: string
   mintCount: number
   imageUrl: string
-  therapeuticAreas: array
+  therapeuticAreas: Array<string>
 }
 
-
 const IpnftCard = (props: CardProps) => {
-
-  const { title, imageUrl, fundingAmount, mintCount, therapeuticAreas } = props;
+  const { title, imageUrl, fundingAmount, mintCount, therapeuticAreas } = props
 
   return (
     <Box
@@ -22,26 +20,28 @@ const IpnftCard = (props: CardProps) => {
       borderRadius="lg"
       overflow="hidden"
       bg="white"
-      boxShadow='md'
-      
+      boxShadow="md"
     >
-    <Box height="14rem" backgroundColor="red" backgroundImage={imageUrl} backgroundPosition="center">
-
-    </Box>
-      
+      <Box
+        height="14rem"
+        backgroundColor="red"
+        backgroundImage={imageUrl}
+        backgroundPosition="center"
+      ></Box>
 
       <Box p="6">
         <Box display="flex" alignItems="baseline">
-        {therapeuticAreas.map((area) => (
-          <Badge
-          borderRadius="full"
-          px="2"
-          colorScheme="teal"
-          marginRight="5px"
-        >
-          {area}
-        </Badge>
-            ))}
+          {therapeuticAreas.map((area) => (
+            <Badge
+              key={area}
+              borderRadius="full"
+              px="2"
+              colorScheme="teal"
+              marginRight="5px"
+            >
+              {area}
+            </Badge>
+          ))}
         </Box>
 
         <Box
@@ -68,17 +68,33 @@ const IpnftCard = (props: CardProps) => {
         </Box>
         <Flex width="100%" justify="space-between" marginTop="20px">
           <Link href={`/ipnft/${encodeURIComponent(props.tokenId)}`}>
-            <Button width="1/3" backgroundColor="02213a" fontWeight="bold" fontSize='12px'_hover={{ bg: '#B2F5EA' }}>
+            <Button
+              width="1/3"
+              backgroundColor="02213a"
+              fontWeight="bold"
+              fontSize="12px"
+              _hover={{ bg: '#B2F5EA' }}
+            >
               View
             </Button>
           </Link>
           <Link href={`/emit_fam/${encodeURIComponent(props.tokenId)}`}>
-            <Button width="1/3" backgroundColor="02213a" fontSize='12px'_hover={{ bg: '#B2F5EA' }}>
+            <Button
+              width="1/3"
+              backgroundColor="02213a"
+              fontSize="12px"
+              _hover={{ bg: '#B2F5EA' }}
+            >
               Create FAM
             </Button>
           </Link>
           <Link href={`/emit_frens/${encodeURIComponent(props.tokenId)}`}>
-            <Button width="1/4" backgroundColor="02213a" _hover={{ bg: '#B2F5EA' }} fontSize='12px'>
+            <Button
+              width="1/4"
+              backgroundColor="02213a"
+              _hover={{ bg: '#B2F5EA' }}
+              fontSize="12px"
+            >
               Create FRENS
             </Button>
           </Link>
