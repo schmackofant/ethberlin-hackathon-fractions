@@ -95,18 +95,19 @@ export default function EmitFAM() {
 
           <p>New total supply will be {newTotalSupply}</p>
 
-          <Button
-            colorScheme="green"
-            onClick={emitFAM as any}
-            isDisabled={
-              !emitFAM || isEmitLoading || isEmitStarted || !isConnected
-            }
-            isLoading={isEmitLoading}
-          >
-            {isEmitLoading && 'Waiting for approval'}
-            {isEmitStarted && 'Emitting...'}
-            {!isEmitLoading && !isEmitStarted && 'Create FAM tokens'}
-          </Button>
+          {!wasEmitted && (
+            <Button
+              colorScheme="green"
+              onClick={emitFAM as any}
+              loadingText="Waiting for transaction..."
+              isDisabled={
+                !emitFAM || isEmitLoading || isEmitStarted || !isConnected
+              }
+              isLoading={isEmitLoading || (isEmitStarted && !wasEmitted)}
+            >
+              {!isEmitLoading && !isEmitStarted && 'Create FAM tokens'}
+            </Button>
+          )}
 
           {wasEmitted && (
             <Alert status="success" mt={8}>
