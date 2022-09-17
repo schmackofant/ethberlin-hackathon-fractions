@@ -2,17 +2,17 @@ export const ipnftData = [
   {
     id: 0,
     title: 'The longevity Molecule',
-    imageUrl: 'https://bit.ly/2Z4KKcF',
+    imageUrl: '/images/longevity-molecule.png',
     therapeuticAreas: ['AGEING', 'MENTAL HEALTH', 'RESPIRATORY'],
     fundingAmount: '250.000',
     mintCount: 1
   },
   {
     id: 1,
-    title: 'The longevity Molecule',
+    title: 'Discovering Novel Autophagy Activators',
     imageUrl: 'https://bit.ly/2Z4KKcF',
     therapeuticAreas: ['AGEING', 'Obesity', 'RESPIRATORY'],
-    fundingAmount: '250.000',
+    fundingAmount: '285.000',
     mintCount: 1
   }
 ]
