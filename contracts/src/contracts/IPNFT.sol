@@ -55,33 +55,51 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _mint(account, id, amount, data);
     }
 
-    function createFren(
-        string calldata name,
-        string calldata symbol,
-        uint8 decimals,
-        uint256 initialSupply,
-        uint256 id
-    )
-        public
-        onlyOwner // onlyFAM(id)
-        returns(address)
-    {
-        address FREN = IFactory(frenFactory).deployNewFRENToken(
-            name,
-            symbol,
-            decimals,
-            initialSupply,
-            msg.sender,
-            id
-        );
+    // function createFren(
+    //     string calldata name,
+    //     string calldata symbol,
+    //     uint8 decimals,
+    //     uint256 initialSupply,
+    //     uint256 id
+    // )
+    //     public
+    //     onlyOwner // onlyFAM(id)
+    //     returns(address)
+    // {
+    //     address FREN = IFactory(frenFactory).deployNewFRENToken(
+    //         name,
+    //         symbol,
+    //         decimals,
+    //         initialSupply,
+    //         msg.sender,
+    //         id
+    //     );
 
-        FRENContracts memory newContract;
-        newContract.tokenId = id;
-        // newContract.tokensLocked = ;
-        newContract.FRENaddress = FREN;
-        erc1155ToFREN[id] = newContract;
-        return FREN;
-    }
+    //     FRENContracts memory newContract;
+    //     newContract.tokenId = id;
+    //     // newContract.tokensLocked = ;
+    //     newContract.FRENaddress = FREN;
+    //     erc1155ToFREN[id] = newContract;
+    //     return FREN;
+    // }
+
+    // // function createMooorFren
+    // // takes amount of FAM token to deposit and amount of FREN token to mint
+    // // "exchange rate" is implied as a result
+    // function createMooooorFren(
+    //     uint256 amountFAMToLock,
+    //     uint256 amountFRENToMint,
+    //     uint256 id // ID of FAM token we're minting FRENS against
+    // ) {
+    //     // Locking FAM
+    //     safeTransferFrom(
+    //         from,
+    //         to,
+    //         id,
+    //         amountFAMToLock,
+    //         "0x"
+    //     )
+    // }
 
 
     function burn(

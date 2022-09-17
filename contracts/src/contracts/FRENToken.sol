@@ -2,20 +2,35 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "./FRENTokenFactory.sol";
 
 contract FRENToken is ERC20 {
 
-    uint256 public _parent1155;
+    uint256 public parent1155;
+    FRENTokenFactory public parentFactory;
+    address public accountLockingFAM;
 
     constructor(
         string memory name,
         string memory symbol,
         uint8 decimals,
         uint256 initialSupply,
-        address owner,
-        uint256 parent1155  // The parent ERC1155 token id that the ERC20 is a FREN for
+        address _accountLockingFAM,
+        uint256 _parent1155,  // The parent ERC1155 token id that the ERC20 is a FREN for
+        address _parentFactory
     ) ERC20(name, symbol) {
-        _mint(owner, initialSupply * 10**uint256(decimals));
-        _parent1155 = parent1155;
+        _mint(_accountLockingFAM, initialSupply * 10**uint256(decimals));
+        _accountLockingFAM = accountLockingFAM;
+        parent1155 = _parent1155;
+        parentFactory = _parentFactory;
     }
+
+    // mint only if more FAM tokens are to be locked
+    // make sure only FRENConstitutor is calling this, you can verify off of public variable on FRENTokenFactory contract
+    function mint(uint256 amount) public {
+        require(msg.sender == parentFactory.frenConstitutor, "not frenConstitutor");
+
+        _mint(accountLockingFAM, amount);
+    }
+
 }
