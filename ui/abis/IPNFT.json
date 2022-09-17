@@ -207,11 +207,6 @@
         "type": "uint256",
         "name": "amount",
         "internalType": "uint256"
-      },
-      {
-        "type": "bytes",
-        "name": "data",
-        "internalType": "bytes"
       }
     ],
     "outputs": [],
