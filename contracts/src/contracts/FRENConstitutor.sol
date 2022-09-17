@@ -20,7 +20,8 @@ contract FRENConstitutor {
         uint256 tokensLocked;
     }
     
-    struct ReconstitutionOffer {
+    struct TopReconstitutionOffer {
+        address offerer;
         uint256 amount;
         uint256 tokenId; // FAM Token ID that the offer is for 
     }
@@ -31,11 +32,8 @@ contract FRENConstitutor {
     // Mapping FAM tokens to their associated FREN Tokens
     mapping(uint256 => address) public FAMTokenIdToFRENToken;
 
-    // Mapping reconstitution offerer to offer
-    mapping(address => ReconstitutionOffer) public reconstitutionOfferers;
-
-    // FAM token ids Active reconstitution offers
-    mapping(uint256 => ReconstitutionOffer) public FAMToReconstitutionOffer;
+    // FAM token ids to top reconstitution offers
+    mapping(uint256 => TopReconstitutionOffer) public FAMToTopReconstitutionOffer;
 
 
     event FRENTokenCreated(address tokenAddress);
@@ -142,7 +140,7 @@ contract FRENConstitutor {
     function createMooooorFren(
         uint256 amountFAMToLock,
         uint256 amountFRENToMint
-    ) {
+    ) public {
         // acquire FAM tokens
         famToken.safeTransferFrom(
             msg.sender,
@@ -164,10 +162,21 @@ contract FRENConstitutor {
 
     // receive USDC from FAM acquirer
     // future: require that governance has given you permission to make a reconstitution offer 
-    function reconstitutionOffer(uint256 amount) public {
+    // @param id ID of FAM token that the offer is being made for
+    function reconstitutionOffer(uint256 amount, uint256 id) public {
+        // must be higher offer than current offer for FAM
+        require(amount > FAMToTopReconstitutionOffer[id].amount, "offer too low");
+
         reconstitutionOfferToken.transferFrom(msg.sender, address(this), amount);
         
-        reconstitutionOfferers[msg.sender] += amount;
+        // refund previous offerer
+        reconstitutionOfferToken.transferFrom(address(this), reconstitutionOfferers[id].offerer, reconstitutionOfferers[id].amount);
+
+        // set new high offer
+        reconstitutionOfferers[id].offerer = msg.sender;
+        reconstitutionOfferers[id].amount = amount;
+        reconstitutionOfferers[id].tokenId = id;
+
     }
 
     // function withdrawOffer
