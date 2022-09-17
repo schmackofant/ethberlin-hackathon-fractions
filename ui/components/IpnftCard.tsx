@@ -95,7 +95,8 @@ const IpnftCard = (props: CardProps) => {
         {totalSupplyData && balanceData && (
           <Box display="flex" mt="2" alignItems="center">
             <Box as="span" ml="2" color="gray.600" fontSize="sm">
-              {balanceData.toString()} out of {totalSupplyData.toString()}
+              You own {balanceData.toString()} out of{' '}
+              {totalSupplyData.toString()}
             </Box>
           </Box>
         )}
