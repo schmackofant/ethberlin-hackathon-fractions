@@ -41,6 +41,7 @@ export default function Home() {
                 mintCount={ipnft.mintCount}
                 imageUrl={ipnft.imageUrl}
                 therapeuticAreas={ipnft.therapeuticAreas}
+                discoveryLink={ipnft.discoveryLink}
               />
             ))}
           </SimpleGrid>

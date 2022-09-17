@@ -13,7 +13,7 @@ export interface CardProps {
 
 const IpnftCard = (props: CardProps) => {
 
-  const { title, imageUrl, fundingAmount, mintCount, therapeuticAreas } = props;
+  const { title, imageUrl, fundingAmount, mintCount, therapeuticAreas,  discoveryLink } = props;
 
   return (
     <Box
@@ -67,11 +67,12 @@ const IpnftCard = (props: CardProps) => {
           </Box>
         </Box>
         <Flex width="100%" justify="space-between" marginTop="20px">
-          <Link href={`/ipnft/${encodeURIComponent(props.tokenId)}`}>
+          <a href={discoveryLink} target="_blank">
             <Button width="1/3" backgroundColor="02213a" fontWeight="bold" fontSize='12px'_hover={{ bg: '#B2F5EA' }}>
               View
             </Button>
-          </Link>
+            
+          </a>
           <Link href={`/emit_fam/${encodeURIComponent(props.tokenId)}`}>
             <Button width="1/3" backgroundColor="02213a" fontSize='12px'_hover={{ bg: '#B2F5EA' }}>
               Create FAM
