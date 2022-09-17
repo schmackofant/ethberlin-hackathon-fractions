@@ -3,6 +3,9 @@ import {
     Flex,
     HStack,
     Image,
+    Switch,
+    useColorMode,
+    Container,
     Link as Anchor,
   } from '@chakra-ui/react'
   import { ConnectKitButton } from 'connectkit'
@@ -19,7 +22,10 @@ import {
   ]
 
   const MainNav: FC = () => {
+    const { colorMode, toggleColorMode } = useColorMode()
     return (
+      <Flex alignItems="center" justifyContent="center">
+      <Container maxW={'3xl'} m={6} minWidth="3xl">
       <Box>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <div>
@@ -45,6 +51,12 @@ import {
           <ConnectKitButton />
         </Flex>
       </Box>
+      </Container>
+      <Box display="flex" alignItems="center"position="absolute" right="5rem">
+      <p>Dark Mode</p>
+      <Switch id='dark-mode'  onChange={toggleColorMode}/>
+      </Box>
+      </Flex>
     )
   }
 
