@@ -7,14 +7,13 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../interfaces/IFactory.sol";
 
 contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
 
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
     
-    address public frenFactory;
+    // address public frenFactory;
 
     constructor() ERC1155("") {}
 
@@ -54,53 +53,6 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     ) public onlyOwner onlyHolder(id) {
         _mint(account, id, amount, data);
     }
-
-    // function createFren(
-    //     string calldata name,
-    //     string calldata symbol,
-    //     uint8 decimals,
-    //     uint256 initialSupply,
-    //     uint256 id
-    // )
-    //     public
-    //     onlyOwner // onlyFAM(id)
-    //     returns(address)
-    // {
-    //     address FREN = IFactory(frenFactory).deployNewFRENToken(
-    //         name,
-    //         symbol,
-    //         decimals,
-    //         initialSupply,
-    //         msg.sender,
-    //         id
-    //     );
-
-    //     FRENContracts memory newContract;
-    //     newContract.tokenId = id;
-    //     // newContract.tokensLocked = ;
-    //     newContract.FRENaddress = FREN;
-    //     erc1155ToFREN[id] = newContract;
-    //     return FREN;
-    // }
-
-    // // function createMooorFren
-    // // takes amount of FAM token to deposit and amount of FREN token to mint
-    // // "exchange rate" is implied as a result
-    // function createMooooorFren(
-    //     uint256 amountFAMToLock,
-    //     uint256 amountFRENToMint,
-    //     uint256 id // ID of FAM token we're minting FRENS against
-    // ) {
-    //     // Locking FAM
-    //     safeTransferFrom(
-    //         from,
-    //         to,
-    //         id,
-    //         amountFAMToLock,
-    //         "0x"
-    //     )
-    // }
-
 
     function burn(
         address account,
@@ -150,12 +102,12 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _unpause();
     }
 
-    function setFactory(address _frenFactory)
-        public
-        onlyOwner
-    {
-        frenFactory =  _frenFactory;
-    }
+    // function setFactory(address _frenFactory)
+    //     public
+    //     onlyOwner
+    // {
+    //     frenFactory =  _frenFactory;
+    // }
 
 
     /**
