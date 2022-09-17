@@ -1,7 +1,8 @@
-import { ChakraProvider, Container, Box } from "@chakra-ui/react";
+import { Box,ChakraProvider, Container } from "@chakra-ui/react";
 import { ConnectKitProvider, getDefaultClient } from "connectkit";
-import { chain, createClient, WagmiConfig } from "wagmi";
 import { getDefaultProvider } from "ethers";
+import { chain, createClient, WagmiConfig } from "wagmi";
+
 import MainNav from "@/components/MainNav";
 
 const chains = [chain.rinkeby];

@@ -4,11 +4,10 @@ import {
     HStack,
     Image,
     Link as Anchor,
-    useColorModeValue
   } from '@chakra-ui/react'
   import { ConnectKitButton } from 'connectkit'
-  import { FC } from 'react'
   import Link from 'next/link'
+  import { FC } from 'react'
 
   type Anchor = {
     name: string
@@ -18,21 +17,6 @@ import {
   const links: Anchor[] = [
     { name: 'My IP-NFTS', path: '/ipnfts' }
   ]
-
-  const NavLink = ({ link }: { link: Link }) => (
-    <Link
-      px={3}
-      py={1}
-      rounded={'md'}
-      _hover={{
-        textDecoration: 'none',
-        bg: useColorModeValue('gray.200', 'gray.700')
-      }}
-      href={link.path}
-    >
-      {link.name}
-    </Link>
-  )
 
   const MainNav: FC = () => {
     return (

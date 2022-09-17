@@ -1,0 +1,56 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2021, // Allows for the parsing of modern ECMAScript features
+        "sourceType": "module", // Allows for the use of imports
+        "ecmaFeatures": {
+            "jsx": true // Allows for the parsing of JSX
+        }
+    },
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "simple-import-sort"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "next",
+        "prettier"
+    ],
+    "rules": {
+        "prefer-const": "warn",
+        "no-unreachable": "error",
+        "no-undef": "error",
+        "no-empty": "warn",
+        "@typescript-eslint/no-use-before-define": "error",
+        "@typescript-eslint/no-empty-function": "warn",
+        "@typescript-eslint/no-inferrable-types": "warn",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@next/next/no-img-element": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "react-hooks/rules-of-hooks": "warn",
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "import/first": "error",
+        "import/newline-after-import": "error",
+        "import/no-duplicates": "error",
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                "destructuredArrayIgnorePattern": "^_"
+            }
+        ]
+    },
+    "globals": {
+        "JSX": true
+    }
+}
