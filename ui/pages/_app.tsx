@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
       <WagmiConfig client={client}>
         <ConnectKitProvider>
         <Container centerContent>
-              <Container maxW={'3xl'} m={6} minWidth="3xl">
+              <Container maxW={'4xl'} m={6} minWidth="4xl">
           <MainNav />
           <Component {...pageProps} />
           </Container>

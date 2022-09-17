@@ -1,5 +1,6 @@
 import { Flex, Heading, Button, useColorMode, useColorModeValue} from "@chakra-ui/react";
 import MainNav from "../components/MainNav";
+import IpnftCard from "@/components/IpnftCard";
 
 export default function Home() {
   const { toggleColorMode} = useColorMode();
@@ -11,6 +12,7 @@ export default function Home() {
         <Heading mb={6}>Login</Heading>
         <h1>HELLO WORLD</h1>
         <Button onClick={toggleColorMode}>Toggle Color Mode</Button>
+        <IpnftCard/>
     </Flex>
     </Flex>
   )
