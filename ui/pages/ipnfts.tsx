@@ -32,9 +32,13 @@ export default function Home() {
       {address && (
         <Fade in={isConnected}>
         <SimpleGrid columns={2} spacing={4}>
-        </SimpleGrid>
-
+       
+        {ipnftData.map((ipnft) => (
+        <IpnftCard tokenId={ipnft.id} title={ipnft.title} fundingAmount={ipnft.fundingAmount} mintCount={ipnft.mintCount} imageUrl={ipnft.imageUrl}/>
+      ))}
+         </SimpleGrid>
         </Fade>
+        
       )}
     </>
   )
