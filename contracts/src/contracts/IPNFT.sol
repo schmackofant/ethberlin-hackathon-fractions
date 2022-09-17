@@ -30,10 +30,8 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     }
 
 
-
     modifier onlyHolder(uint256 _id) {
         require(balanceOf(msg.sender, _id) > 0, "Must be FAM Holder");
-        require(totalSupply(_id) == 1, "Must be single holder");
         _;
     }
 
