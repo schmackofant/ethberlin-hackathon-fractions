@@ -23,12 +23,12 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _;
     }
 
-    function create() public {
+    function create(uint256 initialSupply, string memory tokenURI) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
 
-        _mint(msg.sender, tokenId, 1, "");
-        _setURI(tokenId, "ar://i-am-a-test-uri");
+        _mint(msg.sender, tokenId, initialSupply, "");
+        _setURI(tokenId, tokenURI);
     }
 
     function addFAM(
