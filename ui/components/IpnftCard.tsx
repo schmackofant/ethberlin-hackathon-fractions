@@ -11,10 +11,18 @@ export interface CardProps {
   mintCount: number
   imageUrl: string
   therapeuticAreas: Array<string>
+  discoveryLink: string
 }
 
 const IpnftCard = (props: CardProps) => {
-  const { title, imageUrl, fundingAmount, mintCount, therapeuticAreas } = props
+  const {
+    title,
+    imageUrl,
+    fundingAmount,
+    mintCount,
+    therapeuticAreas,
+    discoveryLink
+  } = props
 
   const { address } = useAccount()
 
@@ -102,7 +110,7 @@ const IpnftCard = (props: CardProps) => {
         )}
 
         <Flex width="100%" justify="space-between" marginTop="20px">
-          <Link href={`/ipnft/${encodeURIComponent(props.tokenId)}`}>
+          <a href={discoveryLink} target="_blank" rel="noreferrer">
             <Button
               width="1/3"
               backgroundColor="02213a"
@@ -112,7 +120,7 @@ const IpnftCard = (props: CardProps) => {
             >
               View
             </Button>
-          </Link>
+          </a>
           <Link href={`/emit_fam/${encodeURIComponent(props.tokenId)}`}>
             <Button
               width="1/3"
