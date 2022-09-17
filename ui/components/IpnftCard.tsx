@@ -1,6 +1,10 @@
 import { Badge, Box, Button, Flex } from '@chakra-ui/react'
 
-function IpnftCard() {
+export interface CardProps {
+  tokenId: number
+}
+
+const IpnftCard = (props: CardProps) => {
   const property = {
     imageUrl: 'https://bit.ly/2Z4KKcF',
     imageAlt: 'Rear view of modern home with pool',
@@ -53,7 +57,7 @@ function IpnftCard() {
           lineHeight="tight"
           noOfLines={1}
         >
-          {property.title}
+          {property.title} {props.tokenId}
         </Box>
 
         <Box>

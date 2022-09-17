@@ -23,13 +23,11 @@ export default function Home() {
 
       {address && (
         <SimpleGrid columns={2} spacing={4}>
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
-          <IpnftCard />
+          <IpnftCard tokenId={0} />
+          <IpnftCard tokenId={1} />
+          <IpnftCard tokenId={2} />
+          <IpnftCard tokenId={3} />
+          <IpnftCard tokenId={4} />
         </SimpleGrid>
       )}
     </>
