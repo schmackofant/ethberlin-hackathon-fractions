@@ -35,8 +35,6 @@ contract IPNFTTest is Test {
         token.create();
         vm.stopPrank();
 
-        console.log(token.uri(0));
-
         assertEq(token.uri(0), "ar://i-am-a-test-uri");
     }
 }

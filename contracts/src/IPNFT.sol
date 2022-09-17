@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "../src/ERC20TokenFactory.sol";
 
 contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
-    
+
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
     ERC20TokenFactory public factory = new ERC20TokenFactory();
@@ -40,7 +40,7 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _mint(account, id, amount, data);
     }
 
-    function addFren(        
+    function addFren(
         string calldata name,
         string calldata symbol,
         uint8 decimals,
@@ -109,7 +109,7 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _unpause();
     }
 
-    /** 
+    /**
      * @dev See {ERC1155-_beforeTokenTransfer}.
      */
     function _beforeTokenTransfer(
