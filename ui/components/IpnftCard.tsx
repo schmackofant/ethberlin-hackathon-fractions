@@ -5,9 +5,8 @@ function IpnftCard() {
     imageUrl: 'https://bit.ly/2Z4KKcF',
     imageAlt: 'Rear view of modern home with pool',
     title: 'The Longevity Molecule',
-    formattedPrice: '$250.000',
-    mintCount: 1,
-    rating: 4
+    foundingAmount: '$250.000',
+    mintCount: 1
   }
 
   return (
@@ -17,6 +16,7 @@ function IpnftCard() {
       borderRadius="lg"
       overflow="hidden"
       bg="white"
+      boxShadow='md'
     >
       <img
         src="https://arweave.net/gQm_NpkJIjEFD6sOVHLEJ-tZIKhRvgmYEl5es0g-YdQ"
@@ -57,7 +57,7 @@ function IpnftCard() {
         </Box>
 
         <Box>
-          {property.formattedPrice + ' '}
+          {property.foundingAmount + ' '}
           <Box as="span" color="gray.600" fontSize="sm">
             total Funding
           </Box>

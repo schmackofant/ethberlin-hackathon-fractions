@@ -1,7 +1,18 @@
-import { Alert, AlertIcon, Box, Heading, SimpleGrid } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Heading, SimpleGrid, Fade } from '@chakra-ui/react'
 import { useAccount } from 'wagmi'
 
 import IpnftCard from '@/components/IpnftCard'
+
+const Ipnfts = [
+  {id: 1,
+  title: "The longevity Molecule",
+  imageUrl: "https://bit.ly/2Z4KKcF",   
+  therapeuticAreas: ["AGEING", "MENTAL HEALTH", "RESPIRATORY"],
+  fundingAmount: "250.000",
+  mintCount: 1
+  
+}
+]
 
 export default function Home() {
   const { address, isConnected } = useAccount()
@@ -22,6 +33,7 @@ export default function Home() {
       </Box>
 
       {address && (
+        <Fade in={isConnected}>
         <SimpleGrid columns={2} spacing={4}>
           <IpnftCard />
           <IpnftCard />
@@ -31,6 +43,7 @@ export default function Home() {
           <IpnftCard />
           <IpnftCard />
         </SimpleGrid>
+        </Fade>
       )}
     </>
   )
