@@ -27,7 +27,7 @@ export default function EmitFren() {
   const { address, isConnected } = useAccount()
 
   const [initialSupply, setInitialSupply] = useState(1)
-  const [FamLockAmount, setFamLockAmount] = useState('')
+  const [FamLockAmount, setFamLockAmount] = useState(1)
 
   const numFrensExisting = 0
 
