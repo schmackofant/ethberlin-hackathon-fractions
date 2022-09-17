@@ -3,44 +3,29 @@ import {
     Flex,
     HStack,
     Image,
-    Link,
-    useColorModeValue
+    Link as Anchor,
   } from '@chakra-ui/react'
   import { ConnectKitButton } from 'connectkit'
+  import Link from 'next/link'
   import { FC } from 'react'
-  
-  type Link = {
+
+  type Anchor = {
     name: string
     path: string
   }
-  
-  const links: Link[] = [
-    { name: 'Home', path: '/' },
-    { name: 'Mint', path: '/mint' },
-    { name: 'My IP-NFTs', path: '/decrypt' }
+
+  const links: Anchor[] = [
+    { name: 'My IP-NFTS', path: '/ipnfts' }
   ]
-  
-  const NavLink = ({ link }: { link: Link }) => (
-    <Link
-      px={3}
-      py={1}
-      rounded={'md'}
-      _hover={{
-        textDecoration: 'none',
-        bg: useColorModeValue('gray.200', 'gray.700')
-      }}
-      href={link.path}
-    >
-      {link.name}
-    </Link>
-  )
-  
+
   const MainNav: FC = () => {
     return (
       <Box>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <div>
-            <Image src="/images/logo.svg" alt="Logo" h={10} />
+            <Link href="/">
+              <Image src="/images/Logo.svg" alt="Logo" h={10} />
+            </Link>
           </div>
           <HStack spacing={8} alignItems={'center'}>
             <HStack
@@ -51,7 +36,9 @@ import {
               display={{ base: 'none', md: 'flex' }}
             >
               {links.map((link) => (
-                <NavLink link={link} key={link.path} />
+                <Link href={link.path} key={link.path}>
+                  {link.name}
+                </Link>
               ))}
             </HStack>
           </HStack>
@@ -60,6 +47,5 @@ import {
       </Box>
     )
   }
-  
+
   export default MainNav
-  
