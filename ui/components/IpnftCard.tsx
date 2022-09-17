@@ -29,10 +29,12 @@ const IpnftCard = (props: CardProps) => {
       overflow="hidden"
       bg="white"
       boxShadow='md'
+      
     >
-      <img
-        src={imageUrl}
-      />
+    <Box height="14rem" backgroundColor="red" backgroundImage={imageUrl} backgroundPosition="center">
+
+    </Box>
+      
 
       <Box p="6">
         <Box display="flex" alignItems="baseline">
@@ -76,7 +78,7 @@ const IpnftCard = (props: CardProps) => {
 
         <Box display="flex" mt="2" alignItems="center">
           <Box as="span" ml="2" color="gray.600" fontSize="sm">
-            {property.mintCount} out of {property.mintCount}
+            {mintCount} out of {mintCount}
           </Box>
         </Box>
         <Flex width="100%" justify="space-between" marginTop="20px">
