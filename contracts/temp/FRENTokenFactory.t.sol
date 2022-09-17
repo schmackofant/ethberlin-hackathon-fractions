@@ -2,34 +2,37 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/contracts/ERC20TokenFactory.sol";
-import "../src/contracts/ERC20Token.sol";
+import "../src/contracts/FRENTokenFactory.sol";
+import "../src/contracts/FRENToken.sol";
 
 
-contract ERC20TokenFactoryTest is Test {
-  ERC20TokenFactory public factory;
-  ERC20Token public token;
+contract FRENTokenFactoryTest is Test {
+  FRENTokenFactory public factory;
+  FRENToken public token;
   address bob = address(0x1);
   uint256 HUNDRED_IN_WEI = 100000000000000000000;
 
   function setUp() public {
-        factory = new ERC20TokenFactory();
-        token = new ERC20Token(
+        factory = new FRENTokenFactory();
+        token = new FRENToken(
           "foo",
           "foo",
           18,
           100,
-          bob
+          bob,
+          1
         );
     }
 
     function testCreate() public {
         vm.startPrank(bob);
-        factory.deployNewERC20Token(
+        factory.deployNewFRENToken(
           "foo",
           "foo",
           18,
-          100
+          100,
+          bob,
+          1
         );
         vm.stopPrank();
 
