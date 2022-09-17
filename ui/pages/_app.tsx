@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }) {
           <Container centerContent>
             <Container maxW={'4xl'} m={6} minWidth="3xl">
               <MainNav />
-              <Box px={4} py={6} bg="gray.100" borderRadius="md" mt={4}>
+              <Box px={7} py={6} bg="gray.100" borderRadius="md" mt={4}>
                 <Component {...pageProps} />
               </Box>
             </Container>
