@@ -23,5 +23,4 @@ contract ERC20TokenFactory {
 
         return address(erc20Token);
     }
-
 }

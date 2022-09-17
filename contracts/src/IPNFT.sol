@@ -9,7 +9,6 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "../src/ERC20TokenFactory.sol";
 
 contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
-
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
     ERC20TokenFactory public factory = new ERC20TokenFactory();
@@ -32,11 +31,12 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _setURI(tokenId, "ar://i-am-a-test-uri");
     }
 
-    function addFAM(address account, uint256 id, uint256 amount, bytes memory data)
-        public
-        onlyOwner
-        onlyHolder(id)
-    {
+    function addFAM(
+        address account,
+        uint256 id,
+        uint256 amount,
+        bytes memory data
+    ) public onlyOwner onlyHolder(id) {
         _mint(account, id, amount, data);
     }
 
@@ -45,19 +45,20 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         string calldata symbol,
         uint8 decimals,
         uint256 initialSupply
-        )
+    )
         public
-        onlyOwner
-        // onlyFAM(id)
+        onlyOwner // onlyFAM(id)
     {
         //locking of FAM token and conditional logic to assure only create ER20 with majority of FAM holders
-        factory.deployNewERC20Token(name,symbol,decimals,initialSupply);
+        factory.deployNewERC20Token(name, symbol, decimals, initialSupply);
     }
 
-    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
-        public
-        onlyOwner
-    {
+    function mintBatch(
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) public onlyOwner {
         _mintBatch(to, ids, amounts, data);
     }
 
@@ -87,7 +88,7 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _burnBatch(account, ids, values);
     }
 
-   /**
+    /**
      * @dev Total amount of tokens in with a given id.
      */
     function totalSupply(uint256 id) public view virtual returns (uint256) {
@@ -133,12 +134,14 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
                 uint256 id = ids[i];
                 uint256 amount = amounts[i];
                 uint256 supply = _totalSupply[id];
-                require(supply >= amount, "ERC1155: burn amount exceeds totalSupply");
+                require(
+                    supply >= amount,
+                    "ERC1155: burn amount exceeds totalSupply"
+                );
                 unchecked {
                     _totalSupply[id] = supply - amount;
                 }
             }
         }
     }
-
 }
