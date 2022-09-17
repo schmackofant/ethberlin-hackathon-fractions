@@ -16,7 +16,8 @@ contract FRENTokenTest is Test {
           18,
           100,
           bob,
-          1
+          1,
+          address(0x2)
         );
     }
 
