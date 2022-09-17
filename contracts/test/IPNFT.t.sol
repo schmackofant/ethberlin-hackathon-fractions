@@ -15,24 +15,24 @@ contract IPNFTTest is Test {
 
     function testCreate() public {
         vm.startPrank(bob);
-        token.create();
+        token.create(100, "ar://i-am-a-test-uri");
         vm.stopPrank();
 
-        assertEq(token.balanceOf(bob, 0), 1);
+        assertEq(token.balanceOf(bob, 0), 100);
     }
 
     function testCounter() public {
         vm.startPrank(bob);
-        token.create();
-        token.create();
+        token.create(100, "ar://i-am-a-test-uri");
+        token.create(100, "ar://i-am-a-test-uri-too");
         vm.stopPrank();
 
-        assertEq(token.balanceOf(bob, 1), 1);
+        assertEq(token.balanceOf(bob, 1), 100);
     }
 
     function testTokenURI() public {
         vm.startPrank(bob);
-        token.create();
+        token.create(100, "ar://i-am-a-test-uri");
         vm.stopPrank();
 
         assertEq(token.uri(0), "ar://i-am-a-test-uri");
