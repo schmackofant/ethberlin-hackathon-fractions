@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   FormControl,
@@ -93,9 +95,46 @@ export default function EmitFAM() {
 
           <p>New total supply will be {newTotalSupply}</p>
 
-          <Button colorScheme="green" onClick={emitFAM as any}>
-            Create FAM tokens
-          </Button>
+          {!wasEmitted && (
+            <Button
+              colorScheme="green"
+              onClick={emitFAM as any}
+              loadingText="Waiting for transaction..."
+              isDisabled={
+                !emitFAM || isEmitLoading || isEmitStarted || !isConnected
+              }
+              isLoading={isEmitLoading || (isEmitStarted && !wasEmitted)}
+            >
+              {!isEmitLoading && !isEmitStarted && 'Create FAM tokens'}
+            </Button>
+          )}
+
+          {wasEmitted && (
+            <Alert status="success" mt={8}>
+              <AlertIcon />
+              Your FAM tokens were successfully created!&nbsp;
+              <a
+                style={{ textDecoration: 'underline' }}
+                target="_blank"
+                href={`https://goerli.etherscan.io/tx/${txData?.transactionHash}`}
+                rel="noreferrer"
+              >
+                View Transaction
+              </a>
+            </Alert>
+          )}
+
+          {emitError && (
+            <p style={{ marginTop: 24, color: '#FF6257' }}>
+              Error: {emitError.message}
+            </p>
+          )}
+
+          {txError && (
+            <p style={{ marginTop: 24, color: '#FF6257' }}>
+              Error: {txError.message}
+            </p>
+          )}
         </VStack>
       </Box>
     </>

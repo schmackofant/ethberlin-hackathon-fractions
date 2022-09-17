@@ -7,6 +7,7 @@ import "../src/contracts/FRENToken.sol";
 contract FRENTokenTest is Test {
     FRENToken public token;
     address bob = address(0x1);
+    address alice = address(0x2);
     uint256 HUNDRED_IN_WEI = 100000000000000000000;
 
     function setUp() public {
@@ -17,7 +18,7 @@ contract FRENTokenTest is Test {
           100,
           bob,
           1,
-          address(0x2)
+          alice
         );
     }
 
@@ -27,5 +28,25 @@ contract FRENTokenTest is Test {
         vm.stopPrank();
 
         assertEq(token.balanceOf(bob), HUNDRED_IN_WEI);
+
     }
+
+    function testFailMint() public {
+        // bob mints 100 tokens for himself
+        vm.startPrank(bob);
+        token.mint(bob, 100);
+        vm.stopPrank();
+    }
+
+    function testSetup() public {
+        // bob mints 100 tokens for himself
+        vm.startPrank(bob);
+        vm.stopPrank();
+
+        assertEq(token.parent1155(), 1);
+        assertEq(token.parentFactory(), alice);
+
+    }
+    
+
 }
