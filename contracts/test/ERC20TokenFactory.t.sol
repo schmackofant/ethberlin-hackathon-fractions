@@ -2,8 +2,8 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../src/ERC20TokenFactory.sol";
-import "../src/ERC20Token.sol";
+import "../src/contracts/ERC20TokenFactory.sol";
+import "../src/contracts/ERC20Token.sol";
 
 
 contract ERC20TokenFactoryTest is Test {

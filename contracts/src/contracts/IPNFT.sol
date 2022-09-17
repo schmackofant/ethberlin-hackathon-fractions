@@ -6,16 +6,31 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "../src/ERC20TokenFactory.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "../interfaces/IFactory.sol";
 
 contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
+
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
-    ERC20TokenFactory public factory = new ERC20TokenFactory();
-
-    mapping(uint256 => uint256) private _totalSupply;
+    
+    address public erc20factory;
 
     constructor() ERC1155("") {}
+
+
+    // mappings 
+    mapping(uint256 => uint256) private _totalSupply;
+    mapping(uint256 => erc20Contracts) public erc1155ToERC20;
+
+    //structs
+    struct erc20Contracts {
+        uint256 tokenId;
+        uint256 tokensLocked;
+        address erc20address;
+    }
+
+
 
     modifier onlyHolder(uint256 _id) {
         require(balanceOf(msg.sender, _id) > 0, "Must be FAM Holder");
@@ -40,27 +55,27 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
         _mint(account, id, amount, data);
     }
 
-    function addFren(
+    function createFren(
         string calldata name,
         string calldata symbol,
         uint8 decimals,
-        uint256 initialSupply
+        uint256 initialSupply,
+        uint256 id
     )
         public
         onlyOwner // onlyFAM(id)
+        returns(address)
     {
-        //locking of FAM token and conditional logic to assure only create ER20 with majority of FAM holders
-        factory.deployNewERC20Token(name, symbol, decimals, initialSupply);
+        address erc20 = IFactory(erc20factory).deployNewERC20Token(name, symbol, decimals, initialSupply);
+
+        erc20Contracts memory newContract;
+        newContract.tokenId = id;
+        // newContract.tokensLocked = ;
+        newContract.erc20address = erc20;
+        erc1155ToERC20[id] = newContract;
+        return erc20;
     }
 
-    function mintBatch(
-        address to,
-        uint256[] memory ids,
-        uint256[] memory amounts,
-        bytes memory data
-    ) public onlyOwner {
-        _mintBatch(to, ids, amounts, data);
-    }
 
     function burn(
         address account,
@@ -109,6 +124,14 @@ contract IPNFT is Ownable, Pausable, ERC1155URIStorage {
     function unpause() public onlyOwner {
         _unpause();
     }
+
+    function setFactory(address _erc20Factory)
+        public
+        onlyOwner
+    {
+        erc20factory =  _erc20Factory;
+    }
+
 
     /**
      * @dev See {ERC1155-_beforeTokenTransfer}.

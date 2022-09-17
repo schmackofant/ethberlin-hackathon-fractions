@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
-import "../src/IPNFT.sol";
+import "../src/contracts/IPNFT.sol";
 
 contract IPNFTTest is Test {
     IPNFT public token;
