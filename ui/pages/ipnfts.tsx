@@ -40,6 +40,7 @@ export default function Home() {
                 fundingAmount={ipnft.fundingAmount}
                 mintCount={ipnft.mintCount}
                 imageUrl={ipnft.imageUrl}
+                therapeuticAreas={ipnft.therapeuticAreas}
               />
             ))}
           </SimpleGrid>
