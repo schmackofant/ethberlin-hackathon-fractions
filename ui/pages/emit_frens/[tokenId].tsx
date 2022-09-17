@@ -17,17 +17,16 @@ import {
   useWaitForTransaction
 } from 'wagmi'
 
-import IPNFTContractABI from '../../abis/IPNFT.json'
 import FRENConstitutorContractABI from '../../abis/FRENConstitutor.json'
+import IPNFTContractABI from '../../abis/IPNFT.json'
 
 export default function EmitFren() {
   const router = useRouter()
   const { tokenId } = router.query
   const { address, isConnected } = useAccount()
 
-  const [fractionsAmount, setFractionsAmount] = useState(1)
-  const [recipientAddress, setRecipientAddress] = useState('')
-  const [newTotalSupply, setNewTotalSupply] = useState(0)
+  const [initialSupply, setInitialSupply] = useState(1)
+  const [FamLockAmount, setFamLockAmount] = useState('')
 
   const numFrensExisting = 0
 
@@ -54,14 +53,14 @@ export default function EmitFren() {
     hash: emitDataForApproval?.hash
   })
   const wasApproved = txSuccess
-
+  // const wasApproved = true
 
   // minting FRENS
   const { config: contractWriteConfigForMint } = usePrepareContractWrite({
     addressOrName: process.env.NEXT_PUBLIC_FRENCONSTITUTOR_CONTRACT,
     contractInterface: FRENConstitutorContractABI,
     functionName: 'createFren',
-    args: [id, amountFAMToLock, initialSupply]
+    args: [tokenId, FamLockAmount, initialSupply]
   })
 
   const {
@@ -80,16 +79,6 @@ export default function EmitFren() {
   })
   const wasCreated = txSuccess
 
-  useEffect(() => {
-    if (isConnected) {
-      setRecipientAddress(address)
-    }
-  }, [isConnected, address])
-
-  useEffect(() => {
-    setNewTotalSupply(numFrensExisting + fractionsAmount)
-  }, [fractionsAmount])
-
   return (
     <>
       <Heading as="h1" size="lg">
@@ -98,44 +87,47 @@ export default function EmitFren() {
 
       <Box mt={4}>
         <VStack spacing={6}>
-          <FormControl>
-            <FormLabel>Amount of Frens to create</FormLabel>
-            <Input
-              variant="outline"
-              value={fractionsAmount}
-              onChange={(e) => setFractionsAmount(parseInt(e.target.value))}
-              type="number"
-              min={1}
-            />
-          </FormControl>
-
-          <FormControl>
-            <FormLabel>Recipient address</FormLabel>
-            <Input
-              variant="outline"
-              value={recipientAddress}
-              onChange={(e) => setRecipientAddress(e.target.value)}
-            />
-          </FormControl>
-
-          <p>New total supply will be {newTotalSupply}</p>
-
-          <Button colorScheme="green" onClick={setApprovalForAll as any}>
-            Create Fren tokens
-          </Button>
+          {/* <p>New total supply will be {newTotalSupply}</p> */}
 
           {!wasApproved && (
-            <Button
-              colorScheme="green"
-              onClick={emitFAM as any}
-              loadingText="Waiting for transaction..."
-              isDisabled={
-                !emitFAM || isEmitLoading || isEmitStarted || !isConnected
-              }
-              isLoading={isEmitLoading || (isEmitStarted && !wasApproved)}
-            >
-              {!isEmitLoading && !isEmitStarted && 'Create FAM tokens'}
+            <Button colorScheme="green" onClick={setApprovalForAll as any}>
+              Approve FAM tokens
             </Button>
+          )}
+
+          {wasApproved && (
+            <>
+              <FormControl>
+                <FormLabel>Amount of Frens to create</FormLabel>
+                <Input
+                  variant="outline"
+                  value={initialSupply}
+                  onChange={(e) => setInitialSupply(parseInt(e.target.value))}
+                  type="number"
+                  min={1}
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Recipient address</FormLabel>
+                <Input
+                  variant="outline"
+                  value={FamLockAmount}
+                  onChange={(e) => setFamLockAmount(e.target.value)}
+                />
+              </FormControl>
+              <Button
+                colorScheme="green"
+                onClick={createFren as any}
+                loadingText="Waiting for transaction..."
+                // isDisabled={
+                //   !emitFAM || isEmitLoading || isEmitStarted || !isConnected
+                // }
+                isLoading={isEmitLoading || (isEmitStarted && !wasApproved)}
+              >
+                {!isEmitLoading && !isEmitStarted && 'Create FAM tokens'}
+              </Button>
+            </>
           )}
         </VStack>
       </Box>
