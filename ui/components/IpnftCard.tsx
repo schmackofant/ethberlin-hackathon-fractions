@@ -1,16 +1,13 @@
-import { Box, Badge} from "@chakra-ui/react";
-import Image from "next/image"
+import { Box, Badge, Button, Flex} from "@chakra-ui/react";
 import StarIcon from '@chakra-ui/react'
 
 function IpnftCard() {
     const property = {
       imageUrl: 'https://bit.ly/2Z4KKcF',
       imageAlt: 'Rear view of modern home with pool',
-      beds: 3,
-      baths: 2,
-      title: 'Modern home in city center in the heart of historic Los Angeles',
-      formattedPrice: '$1,900.00',
-      reviewCount: 34,
+      title: 'The Longevity Molecule',
+      formattedPrice: '$250.000',
+      mintCount: 1,
       rating: 4,
     }
   
@@ -20,19 +17,15 @@ function IpnftCard() {
   
         <Box p='6'>
           <Box display='flex' alignItems='baseline'>
-            <Badge borderRadius='full' px='2' colorScheme='teal'>
-              New
+            <Badge borderRadius='full' px='2' colorScheme='teal' marginRight="5px">
+            Ageing
             </Badge>
-            <Box
-              color='gray.500'
-              fontWeight='semibold'
-              letterSpacing='wide'
-              fontSize='xs'
-              textTransform='uppercase'
-              ml='2'
-            >
-              {property.beds} beds &bull; {property.baths} baths
-            </Box>
+            <Badge borderRadius='full' px='2' colorScheme='teal' marginRight="5px">
+            Mental Health
+            </Badge>
+            <Badge borderRadius='full' px='2' colorScheme='teal'>
+            Respiratory
+            </Badge>
           </Box>
   
           <Box
@@ -46,18 +39,23 @@ function IpnftCard() {
           </Box>
   
           <Box>
-            {property.formattedPrice}
+            {property.formattedPrice + " "}
             <Box as='span' color='gray.600' fontSize='sm'>
-              / wk
+             total Funding
             </Box>
           </Box>
   
           <Box display='flex' mt='2' alignItems='center'>
 
             <Box as='span' ml='2' color='gray.600' fontSize='sm'>
-              {property.reviewCount} reviews
+              {property.mintCount} out of {property.mintCount}
             </Box>
           </Box>
+          <Flex width="100%" justify="space-between" marginTop="20px">
+          <Button width="1/3" colorScheme='blue'>View</Button>
+          <Button width="1/4" colorScheme='blue'>Create FAM</Button>
+          <Button width="1/4" colorScheme='blue'>Create FREN</Button>
+          </Flex>
         </Box>
       </Box>
     )
