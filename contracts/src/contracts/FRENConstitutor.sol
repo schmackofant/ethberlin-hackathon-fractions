@@ -23,7 +23,6 @@ contract FRENConstitutor {
     struct TopReconstitutionOffer {
         address offerer;
         uint256 amount;
-        uint256 claimed;
         uint256 tokenId; // FAM Token ID that the offer is for 
     }
 
@@ -41,14 +40,13 @@ contract FRENConstitutor {
 
     // (super inefficient) map accounts to voting status on various FAMs
     // also doubles as a switch to show that someone's already claimed their reconstitutionOfferTokens
-    mapping(address => mapping(uint256 => bool)) votingStatus;
+    mapping(address => mapping(uint256 => bool)) public votingStatus;
 
     // mapping FAM to whether reconstitution is active for it
-    mapping(uint256 => bool) reconstitutionStatus;
+    mapping(uint256 => bool) public reconstitutionStatus;
 
     event FRENTokenCreated(address tokenAddress);
     event ReconstitutionActive(uint256 FAMTokenId);
-
 
     constructor(
         IPNFT _famToken,
@@ -170,12 +168,14 @@ contract FRENConstitutor {
         // must be higher offer than current offer for FAM
         require(amount > FAMToTopReconstitutionOffer[id].amount, "offer too low");
         // reconstitution can't be active
-        require(reconstitutionStatus[id], "reconstitution is active");
+        require(!reconstitutionStatus[id], "reconstitution is already active");
 
         reconstitutionOfferToken.transferFrom(msg.sender, address(this), amount);
         
         // refund previous offerer
-        reconstitutionOfferToken.transferFrom(address(this), FAMToTopReconstitutionOffer[id].offerer, FAMToTopReconstitutionOffer[id].amount);
+        if(FAMToTopReconstitutionOffer[id].offerer != address(0)) {
+            reconstitutionOfferToken.transferFrom(address(this), FAMToTopReconstitutionOffer[id].offerer, FAMToTopReconstitutionOffer[id].amount);
+        }
 
         // set new high offer
         FAMToTopReconstitutionOffer[id].offerer = msg.sender;
@@ -187,8 +187,8 @@ contract FRENConstitutor {
     // allow FREN holders to signal support
     // we're not dealing with the logic of reseting voting status for now
     function vote(uint256 id) public {
-        require(votingStatus[msg.sender][id] == false, "already voted");
-        require(reconstitutionStatus[id] == false, "reconstitution already in progress");
+        require(!votingStatus[msg.sender][id], "already voted");
+        require(!reconstitutionStatus[id], "reconstitution already in progress");
         require(FAMToTopReconstitutionOffer[id].amount != 0, "no active offer"); // no point in voting
         
 
@@ -208,12 +208,15 @@ contract FRENConstitutor {
 
     /// @notice Claim share of reconstitution offer
     function claim(uint256 id) public {
-        require(reconstitutionStatus[id] == true, "reconstitution not active for this FAM");
-        require(votingStatus[msg.sender][id] == true, "have not voted");
-        
-        // ( amount of FREN owned / total FREN supply ) * FAM reconstitution offer amount
-        uint256 claimAmount = ( FRENToken(FAMTokenIdToFRENToken[id]).balanceOf(msg.sender) / FRENToken(FAMTokenIdToFRENToken[id]).totalSupply() ) / FAMToTopReconstitutionOffer[id].amount;
+        require(reconstitutionStatus[id], "reconstitution not active for this FAM");
+        require(votingStatus[msg.sender][id], "have not voted");
 
+        // ( amount of FREN owned / total FREN supply ) * FAM reconstitution offer amount
+        uint256 claimAmount = ( FRENToken(FAMTokenIdToFRENToken[id]).balanceOf(msg.sender) * FAMToTopReconstitutionOffer[id].amount ) / FRENToken(FAMTokenIdToFRENToken[id]).totalSupply() ;
+
+        // burn fren tokens
+        FRENToken(FAMTokenIdToFRENToken[id]).burn(msg.sender);
+        
         // transfer claim
         reconstitutionOfferToken.transfer(msg.sender, claimAmount);
 
@@ -221,14 +224,28 @@ contract FRENConstitutor {
         votingStatus[msg.sender][id] = false;
     }
 
+    /// @notice If you have top offer for a certain FAM id and reconstitution passes, you can claim all that FAM
+    function offererFAMClaim(uint256 id) public {
+        require(reconstitutionStatus[id], "reconstitution not active for this FAM");
+        require(FAMToTopReconstitutionOffer[id].offerer == msg.sender, "not winning offerer");
 
+        famToken.safeTransferFrom(
+            address(this),
+            address(msg.sender),
+            id,
+            famToken.balanceOf(address(this), id),
+            "0x"
+        );
 
+    }
 
-function onERC1155Received(address, address, uint256, uint256, bytes memory) public virtual returns (bytes4) {
+    // missing: the ability to shut down a reconstitution after a certain period so that funds can be retrieved in the event of dormant token holders
+
+    function onERC1155Received(address, address, uint256, uint256, bytes memory) public virtual returns (bytes4) {
         return this.onERC1155Received.selector;
     }
 
-function onERC1155BatchReceived(address, address, uint256[] memory, uint256[] memory, bytes memory) public virtual returns (bytes4) {
+    function onERC1155BatchReceived(address, address, uint256[] memory, uint256[] memory, bytes memory) public virtual returns (bytes4) {
         return this.onERC1155BatchReceived.selector;
     }
 

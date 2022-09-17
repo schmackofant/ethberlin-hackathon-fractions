@@ -31,5 +31,11 @@ contract FRENToken is ERC20 {
 
         _mint(recipient, amount);
     }
+    
+    // burn upon claiming offered tokens in reconstitution
+    function burn(address claimer) public {
+        require(msg.sender == parentFactory, "not frenConstitutor");
+        _burn(claimer, balanceOf(claimer));
+    }
 
 }
