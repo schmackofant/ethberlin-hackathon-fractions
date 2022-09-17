@@ -1,6 +1,6 @@
 export const ipnftData = [
   {
-    id: 1,
+    id: 0,
     title: 'The longevity Molecule',
     imageUrl: 'https://bit.ly/2Z4KKcF',
     therapeuticAreas: ['AGEING', 'MENTAL HEALTH', 'RESPIRATORY'],
@@ -8,7 +8,7 @@ export const ipnftData = [
     mintCount: 1
   },
   {
-    id: 2,
+    id: 1,
     title: 'The longevity Molecule',
     imageUrl: 'https://bit.ly/2Z4KKcF',
     therapeuticAreas: ['AGEING', 'Obesity', 'RESPIRATORY'],
