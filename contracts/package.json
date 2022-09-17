@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "solhint": "./node_modules/.bin/solhint -f table src/**/*.sol",
-    "prettier:solidity": "./node_modules/.bin/prettier --write src/**/*.sol"
+    "prettier:solidity": "./node_modules/.bin/prettier --write src/**/*.sol",
+    "test": "forge test"
   },
   "dependencies": {
     "prettier": "^2.7.1",
