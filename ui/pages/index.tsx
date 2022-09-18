@@ -1,4 +1,4 @@
-import { Heading, Divider, Stack, Text, Image, Box} from '@chakra-ui/react'
+import { Box,Divider, Heading, Image, Stack, Text} from '@chakra-ui/react'
 
 export default function Home() {
   return (
