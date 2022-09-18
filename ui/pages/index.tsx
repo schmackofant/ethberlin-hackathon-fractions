@@ -10,7 +10,6 @@ export default function Home() {
       <Box boxSize="l" my="30px">
         <Image
           src="/images/fractional.jpg"
-          alt="Dan Abramov"
           borderRadius="5px"
         />
       </Box>
