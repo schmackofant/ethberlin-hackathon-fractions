@@ -81,7 +81,7 @@ export default function EmitFren() {
   return (
     <>
       <Heading as="h1" size="lg">
-        Lock IP-NFT {tokenId} and create Fren tokens
+        Create FREN tokens
       </Heading>
 
       <Box mt={4}>
