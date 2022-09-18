@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   FormControl,
@@ -37,24 +39,23 @@ export default function EmitFren() {
   })
 
   const {
-    data: emitDataForApproval,
+    data: dataForApproval,
     write: setApprovalForAll,
-    isLoading: isEmitLoading,
-    isSuccess: isEmitStarted,
-    error: emitError
+    isLoading: isApprovalLoading,
+    isSuccess: isApprovalStarted,
+    error: approvalError
   } = useContractWrite(contractWriteConfigForApproval)
   const {
-    data: txData,
-    isSuccess: txSuccess,
-    error: txError
+    data: approvalTxData,
+    isSuccess: approvalTxSuccess,
+    error: approvalTxError
   } = useWaitForTransaction({
-    hash: emitDataForApproval?.hash
+    hash: dataForApproval?.hash
   })
-  const wasApproved = txSuccess
-  // const wasApproved = true
+  const wasApproved = approvalTxSuccess
 
-  // minting FRENS
-  const { config: contractWriteConfigForMint } = usePrepareContractWrite({
+  // Minting FRENS
+  const { config: contractWriteConfigForEmit } = usePrepareContractWrite({
     addressOrName: process.env.NEXT_PUBLIC_FRENCONSTITUTOR_CONTRACT,
     contractInterface: FRENConstitutorContractABI,
     functionName: 'createFren',
@@ -62,20 +63,20 @@ export default function EmitFren() {
   })
 
   const {
-    data: emitDataForMint,
+    data: dataForEmit,
     write: createFren,
     isLoading: isEmitFrenLoading,
     isSuccess: isEmitFrenStarted,
     error: emitFrenError
-  } = useContractWrite(contractWriteConfigForMint)
+  } = useContractWrite(contractWriteConfigForEmit)
   const {
     data: frenTxData,
     isSuccess: frenTxSuccess,
     error: frenTxError
   } = useWaitForTransaction({
-    hash: emitDataForMint?.hash
+    hash: dataForEmit?.hash
   })
-  const wasCreated = txSuccess
+  const wasEmitted = frenTxSuccess
 
   return (
     <>
@@ -85,10 +86,15 @@ export default function EmitFren() {
 
       <Box mt={4}>
         <VStack spacing={6}>
-          {/* <p>New total supply will be {newTotalSupply}</p> */}
-
           {!wasApproved && (
-            <Button colorScheme="green" onClick={setApprovalForAll as any}>
+            <Button
+              colorScheme="green"
+              onClick={setApprovalForAll as any}
+              loadingText="Waiting for approval..."
+              isLoading={
+                isApprovalLoading || (isApprovalStarted && !wasApproved)
+              }
+            >
               Approve FAM tokens
             </Button>
           )}
@@ -111,9 +117,10 @@ export default function EmitFren() {
                 <Input
                   variant="outline"
                   value={FamLockAmount}
-                  onChange={(e) => setFamLockAmount(e.target.value)}
+                  onChange={(e) => setFamLockAmount(parseInt(e.target.value))}
                 />
               </FormControl>
+
               <Button
                 colorScheme="green"
                 onClick={createFren as any}
@@ -121,10 +128,27 @@ export default function EmitFren() {
                 // isDisabled={
                 //   !emitFAM || isEmitLoading || isEmitStarted || !isConnected
                 // }
-                isLoading={isEmitLoading || (isEmitStarted && !wasApproved)}
+                isLoading={
+                  isEmitFrenLoading || (isEmitFrenStarted && !wasEmitted)
+                }
               >
                 Create FRENS
               </Button>
+
+              {wasEmitted && (
+                <Alert status="success" mt={8}>
+                  <AlertIcon />
+                  Your FRENS tokens were successfully created!&nbsp;
+                  <a
+                    style={{ textDecoration: 'underline' }}
+                    target="_blank"
+                    href={`https://goerli.etherscan.io/tx/${frenTxData?.transactionHash}`}
+                    rel="noreferrer"
+                  >
+                    View Transaction
+                  </a>
+                </Alert>
+              )}
             </>
           )}
         </VStack>
