@@ -68,7 +68,7 @@ export default function EmitFAM() {
   return (
     <>
       <Heading as="h1" size="lg">
-        Create FAM tokens for IP-NFT {tokenId}
+        Create FAM tokens for IP-NFT #{tokenId}
       </Heading>
 
       <Box mt={4}>
