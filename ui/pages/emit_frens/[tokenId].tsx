@@ -27,7 +27,7 @@ export default function EmitFren() {
   const { tokenId } = router.query
   const { address, isConnected } = useAccount()
 
-  const [initialSupply, setInitialSupply] = useState(1)
+  const [initialSupply, setInitialSupply] = useState(1000)
   const [FamLockAmount, setFamLockAmount] = useState(1)
 
   // approval
