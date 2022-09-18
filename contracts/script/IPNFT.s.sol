@@ -5,6 +5,7 @@ import "forge-std/Script.sol";
 import "forge-std/console.sol";
 import "../src/contracts/IPNFT.sol";
 import "../src/contracts/FRENConstitutor.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract IPNFTScript is Script {
     function setUp() public {}
@@ -13,7 +14,8 @@ contract IPNFTScript is Script {
         vm.startBroadcast();
         IPNFT nft = new IPNFT();
         // deploy the FRENConstitutor contract with the right params
-        vm.stopBroadcast();
+        FRENConstitutor frenConstitutor = new FRENConstitutor(nft, IERC20(0x2f3A40A3db8a7e3D09B0adfEfbCe4f6F81927557))
+;        vm.stopBroadcast();
     }
 }
 
