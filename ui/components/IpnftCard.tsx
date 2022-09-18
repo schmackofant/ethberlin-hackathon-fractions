@@ -59,7 +59,6 @@ const IpnftCard = (props: CardProps) => {
     >
       <Box
         height="14rem"
-        backgroundColor="red"
         backgroundImage={imageUrl}
         backgroundPosition="center"
       ></Box>

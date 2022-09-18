@@ -1,13 +1,18 @@
-import { Heading } from '@chakra-ui/react'
+import { Heading, Divider, Stack, Text, Image, Box} from '@chakra-ui/react'
 
 export default function Home() {
   return (
     <>
       <Heading as="h1" size="lg">
-        Hello World!
+        Tokenized Intelecutal Property.
         <br />
-        Welcome to the world of IP-NFT fractionalization
       </Heading>
+      <Box boxSize='l' my="30px">
+  <Image src='/images/fractional.png' alt='Dan Abramov' borderRadius="5px"/>
+</Box>
+<Divider orientation='horizontal' marginBottom="30px"/>
+  <Text fontStyle="italic">Scientists must collect funds to conduct research. Patients should be empowered to fund therapeutics. Fractionalized IP-NFTs enable risk sharing partnerships for researchers, investors and patients.</Text>
+
     </>
   )
 }
