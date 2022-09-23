@@ -81,7 +81,7 @@ export default function EmitFren() {
   return (
     <>
       <Heading as="h1" size="lg">
-        Create FREN tokens
+        Create FRENS tokens
       </Heading>
 
       <Box mt={4}>
